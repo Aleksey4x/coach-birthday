@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>С Днём Рождения, Тренер!</title>
+<meta name="description" content="Поздравление тренеру от команды">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header class="hero" id="hero">
+  <img class="hero__logo" src="assets/logo/logo.png" alt="Логотип команды" onerror="this.style.display='none'">
+  <h1 class="hero__title reveal">С Днём Рождения!</h1>
+  <p class="hero__subtitle reveal">Поздравляем нашего тренера от всей команды</p>
+  <button class="hero__scroll" id="scrollDown" aria-label="Пролистать вниз">↓</button>
+</header>
+
+<main>
+
+  <section class="section" id="message">
+    <h2 class="section__title reveal">Наши слова</h2>
+    <div class="message reveal">
+      <p>
+        <!-- TODO: вставить текст поздравления от команды -->
+        Здесь будет тёплый текст поздравления от команды.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" id="achievements">
+    <h2 class="section__title reveal">Твои заслуги</h2>
+    <ul class="achievements__list">
+      <!-- TODO: перечень заслуг -->
+      <li class="achievements__item reveal">Заслуга №1</li>
+      <li class="achievements__item reveal">Заслуга №2</li>
+      <li class="achievements__item reveal">Заслуга №3</li>
+    </ul>
+  </section>
+
+  <section class="section" id="gallery">
+    <h2 class="section__title reveal">Фотографии</h2>
+    <div class="gallery" id="galleryGrid">
+      <!-- TODO: сюда фото, например: -->
+      <!-- <img src="assets/img/photo1.jpg" alt="" loading="lazy"> -->
+    </div>
+  </section>
+
+  <section class="section" id="video">
+    <h2 class="section__title reveal">Видео</h2>
+    <div class="video-grid" id="videoGrid">
+      <!-- TODO: сюда видео, например: -->
+      <!-- <video controls playsinline preload="metadata" src="assets/video/clip1.mp4"></video> -->
+    </div>
+  </section>
+
+  <section class="section" id="audio">
+    <h2 class="section__title reveal">Голосовые сообщения</h2>
+    <div class="audio-list" id="audioList">
+      <!-- TODO: сюда аудио, например: -->
+      <!--
+      <div class="audio-item reveal">
+        <span class="audio-item__name">Имя</span>
+        <audio controls preload="none" src="assets/audio/message1.mp3"></audio>
+      </div>
+      -->
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>С любовью, твоя команда ❤️</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
