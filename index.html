@@ -22,20 +22,29 @@
   </div>
 </div>
 
-<header class="hero" id="hero">
-  <img class="hero__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
+<div class="hero-pin" id="heroPin">
+  <header class="hero-pin__sticky" id="hero">
+    <img class="hero__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
 
-  <div class="hero__stage" id="heroStage">
-    <img class="hero__photo" id="heroPhoto" src="assets/img/hero/trener.jpg" alt="Тренер">
-    <div class="hero__scrim"></div>
-    <div class="hero__headline" id="heroHeadline">
-      <p class="hero__lead">Есть такой человек.</p>
-      <p class="hero__lead">Он&nbsp;&mdash; <span id="heroRoleWord">Тренер</span></p>
+    <div class="hero__stage" id="heroStage">
+      <div class="hero__photos" id="heroPhotos">
+        <img class="hero__photo" data-index="0" src="assets/img/hero/trener.jpg" alt="Тренер">
+        <img class="hero__photo" data-index="1" src="assets/img/hero/trailrunner.jpg" alt="Трейлраннер">
+        <img class="hero__photo" data-index="2" src="assets/img/hero/skyrunner.jpg" alt="он же Скайраннер">
+        <img class="hero__photo" data-index="3" src="assets/img/hero/trailrunner.jpg" alt="он же Бегун">
+        <img class="hero__photo" data-index="4" src="assets/img/hero/alpinist.png" alt="Альпинист">
+        <img class="hero__photo" data-index="5" src="assets/img/hero/otec.png" alt="Отец">
+        <img class="hero__photo" data-index="6" src="assets/img/hero/puteshestvennik.png" alt="Путешественник">
+        <img class="hero__photo" data-index="7" src="assets/img/hero/veselyi-chelovek.jpg" alt="И крайне весёлый человек">
+        <img class="hero__photo hero__photo--final" data-index="8" src="assets/img/hero/eto-stas.png" alt="Это Стас! (справа)">
+      </div>
+      <div class="hero__headline" id="heroHeadline">
+        <p class="hero__lead">Есть такой человек.</p>
+        <p class="hero__lead hero__role" id="heroRoleLine">Тренер</p>
+      </div>
     </div>
-  </div>
-
-  <button class="hero__scroll" id="scrollDown" aria-label="Пролистать вниз">↓</button>
-</header>
+  </header>
+</div>
 
 <main>
 
@@ -110,15 +119,19 @@
   </section>
 
   <section class="section section--final" id="final">
-    <h2 class="final-heading reveal">
-      Короче, наш тренер <span id="finalTopWord">ТОП</span><span class="final-heading__les" id="finalLesWord">ЛЕС</span>
-    </h2>
-    <div class="final-stage" id="finalStage">
-      <div class="final-photo final-photo--top" id="finalTop">
-        <img src="assets/img/final/top.jpg" alt="ТОП">
-      </div>
-      <div class="final-photo final-photo--les" id="finalLes">
-        <img src="assets/img/final/les.jpg" alt="ЛЕС">
+    <div class="final-pin" id="finalPin">
+      <div class="final-pin__sticky">
+        <h2 class="final-heading">
+          Короче, наш тренер <span class="final-heading__toples">ТОП<span class="final-heading__les" id="finalLesWord">ЛЕС</span></span>
+        </h2>
+        <div class="final-stage" id="finalStage">
+          <div class="final-photo final-photo--top" id="finalTop">
+            <img src="assets/img/final/top.jpg" alt="ТОП">
+          </div>
+          <div class="final-photo final-photo--les" id="finalLes">
+            <img src="assets/img/final/les.jpg" alt="ЛЕС">
+          </div>
+        </div>
       </div>
     </div>
   </section>

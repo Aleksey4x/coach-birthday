@@ -79,15 +79,21 @@ a { color: inherit; }
   to { transform: translateX(-50%); }
 }
 
-/* ---------- Hero ---------- */
-.hero {
+/* ---------- Hero (scroll-pinned role/photo sequence) ---------- */
+.hero-pin {
   position: relative;
-  min-height: 100svh;
+  height: 460vh; /* runway for 9 steps (8 roles + final), tune if steps change */
+}
+
+.hero-pin__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: flex-start;
-  padding: 24px 20px 64px;
+  padding: 24px 20px 32px;
   gap: 16px;
   overflow: hidden;
 }
@@ -106,8 +112,11 @@ a { color: inherit; }
   min-height: 52vh;
   border-radius: 12px;
   overflow: hidden;
-  display: flex;
-  align-items: flex-start;
+}
+
+.hero__photos {
+  position: absolute;
+  inset: 0;
 }
 
 .hero__photo {
@@ -116,18 +125,19 @@ a { color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: contain;
-  transition: opacity 0.4s ease;
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
-.hero__scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(60,16,23,0.9) 0%, rgba(60,16,23,0.55) 30%, rgba(60,16,23,0) 55%);
-  pointer-events: none;
+.hero__photo[data-index="0"] {
+  opacity: 1;
 }
 
 .hero__headline {
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 2;
   text-align: left;
   font-family: var(--font-display);
@@ -135,34 +145,17 @@ a { color: inherit; }
   font-weight: 400;
   line-height: 1.15;
   padding: 16px;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.75), 0 1px 4px rgba(0,0,0,0.6);
 }
 
 .hero__headline.is-final {
   font-size: clamp(2.4rem, 10vw, 3.6rem);
-  color: var(--accent);
 }
 
 .hero__lead { margin: 0; }
 
-.hero__lead span#heroRoleWord {
+.hero__role {
   color: var(--accent);
-  transition: opacity 0.3s ease;
-}
-
-.hero__scroll {
-  align-self: center;
-  background: none;
-  border: none;
-  color: var(--text-muted);
-  font-size: 1.5rem;
-  cursor: pointer;
-  animation: bounce 2s infinite;
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(8px); }
 }
 
 /* ---------- Sections ---------- */
@@ -179,14 +172,14 @@ a { color: inherit; }
   font-weight: 400;
   letter-spacing: 0.02em;
   margin-bottom: 24px;
-  text-align: center;
+  text-align: left;
 }
 
 .section__subtitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-muted);
-  text-align: center;
+  color: rgba(253, 246, 236, 0.85);
+  text-align: left;
   margin: 40px 0 16px;
 }
 
@@ -272,30 +265,34 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   overflow: hidden;
-  padding: 24px 20px;
-  gap: 16px;
+}
+
+.gallery-pin__sticky .section__title {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  right: 20px;
+  z-index: 3;
+  margin-bottom: 0;
 }
 
 .gallery-pin__stage {
-  position: relative;
-  width: 100%;
-  max-width: 320px;
-  height: 260px;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .polaroid {
   position: absolute;
   inset: 0;
   margin: auto;
-  width: 220px;
-  height: 260px;
+  width: 330px;
+  height: 390px;
   background: var(--frame);
-  padding: 10px 10px 28px;
+  padding: 15px 15px 40px;
   border-radius: 2px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.35);
   will-change: transform, opacity;
@@ -308,6 +305,11 @@ a { color: inherit; }
 }
 
 .gallery-pin__brand {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  z-index: 3;
   text-align: center;
 }
 
@@ -336,7 +338,7 @@ a { color: inherit; }
   background: #000;
 }
 
-.video-embed video { width: 100%; display: block; }
+.video-embed video { width: 100%; display: block; cursor: pointer; }
 
 .video-embed__play {
   position: absolute;
@@ -497,39 +499,54 @@ a { color: inherit; }
   line-height: 1.4;
 }
 
-/* ---------- Final block ---------- */
+/* ---------- Final block (scroll-pinned photo swap) ---------- */
 .section--final {
-  text-align: center;
-  padding-bottom: 96px;
+  max-width: none;
+  padding: 0;
+}
+
+.final-pin {
+  position: relative;
+  height: 170vh; /* runway for the single ТОП -> ЛЕС swap */
+}
+
+.final-pin__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 24px 20px;
+  gap: 32px;
+  overflow: hidden;
 }
 
 .final-heading {
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(1.8rem, 8vw, 2.6rem);
-  margin: 0 0 32px;
+  margin: 0;
+  text-align: left;
 }
 
-.final-heading #finalTopWord {
+.final-heading__toples {
+  display: inline-block;
+  white-space: nowrap;
   color: var(--accent);
 }
 
 .final-heading__les {
   display: inline-block;
-  color: var(--accent);
   opacity: 0;
-  transform: translateX(-16px);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.section--final.is-revealed .final-heading__les {
-  opacity: 1;
-  transform: translateX(0);
+  will-change: opacity, transform;
 }
 
 .final-stage {
   position: relative;
-  height: 320px;
+  width: 100%;
+  height: 340px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -541,36 +558,20 @@ a { color: inherit; }
   padding: 10px;
   border-radius: 2px;
   box-shadow: 0 12px 24px rgba(0,0,0,0.35);
-  transition: transform 0.6s ease, opacity 0.6s ease;
+  will-change: transform, opacity;
 }
 
 .final-photo img {
-  width: 200px;
-  height: 260px;
+  width: 220px;
+  height: 280px;
   object-fit: cover;
 }
 
-.final-photo--top {
-  transform: rotate(-2deg) translate(0, 0) scale(1);
-  z-index: 2;
-}
+.final-photo--top { z-index: 2; }
 
 .final-photo--les {
-  transform: rotate(4deg) translate(40px, 20px) scale(0.9);
-  opacity: 0;
   z-index: 1;
-}
-
-.section--final.is-revealed .final-photo--top {
-  transform: rotate(10deg) translate(70px, -50px) scale(0.85);
   opacity: 0;
-  z-index: 1;
-}
-
-.section--final.is-revealed .final-photo--les {
-  transform: rotate(3deg) translate(0, 0) scale(1);
-  opacity: 1;
-  z-index: 2;
 }
 
 /* ---------- Footer ---------- */

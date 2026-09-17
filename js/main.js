@@ -12,49 +12,79 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 revealEls.forEach((el) => revealObserver.observe(el));
 
-// ---------- Hero scroll-down button ----------
-document.getElementById('scrollDown')?.addEventListener('click', () => {
-  document.getElementById('counter')?.scrollIntoView({ behavior: 'smooth' });
-});
+// ---------- Generic scroll-progress helper ----------
+// Maps how far the viewport has scrolled through a tall "pin" wrapper to a 0..1 progress value.
+function makeScrollProgress(wrapperEl, onProgress) {
+  let ticking = false;
 
-// ---------- Hero: cycle "Он — {роль}" photo + word, then reveal "Это Стас!" ----------
-const heroPhoto = document.getElementById('heroPhoto');
-const heroRoleWord = document.getElementById('heroRoleWord');
-const heroHeadline = document.getElementById('heroHeadline');
-
-if (heroPhoto && heroRoleWord && heroHeadline && typeof HERO_SEQUENCE !== 'undefined') {
-  let heroIndex = 0;
-
-  function showHeroStep(step, isFinal) {
-    heroRoleWord.style.opacity = '0';
-    heroPhoto.style.opacity = '0';
-
-    setTimeout(() => {
-      heroPhoto.src = step.img;
-
-      if (isFinal) {
-        heroHeadline.innerHTML = `<p class="hero__lead">${HERO_FINAL.text}</p>`;
-        heroHeadline.classList.add('is-final');
-      } else {
-        heroRoleWord.textContent = step.role;
-      }
-
-      heroPhoto.style.opacity = '1';
-      heroRoleWord.style.opacity = '1';
-    }, 250);
+  function update() {
+    ticking = false;
+    const rect = wrapperEl.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const scrollableDistance = wrapperEl.offsetHeight - viewportHeight;
+    const scrolled = -rect.top;
+    const progress = scrollableDistance > 0 ? scrolled / scrollableDistance : 0;
+    onProgress(Math.min(Math.max(progress, 0), 1));
   }
 
-  const heroTimer = setInterval(() => {
-    heroIndex += 1;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }
 
-    if (heroIndex >= HERO_SEQUENCE.length) {
-      showHeroStep(HERO_FINAL, true);
-      clearInterval(heroTimer);
-      return;
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
+// ---------- Hero: scroll-driven "Он — {роль}" sequence ----------
+const heroPin = document.getElementById('heroPin');
+const heroPhotos = document.getElementById('heroPhotos');
+const heroHeadline = document.getElementById('heroHeadline');
+const heroRoleLine = document.getElementById('heroRoleLine');
+
+if (heroPin && heroPhotos && heroHeadline && heroRoleLine && typeof HERO_SEQUENCE !== 'undefined') {
+  const photos = Array.from(heroPhotos.querySelectorAll('.hero__photo'));
+  const totalSteps = photos.length; // 8 roles + 1 final
+  let renderedIndex = -1;
+
+  function renderHeroStep(index) {
+    if (index === renderedIndex) return;
+    renderedIndex = index;
+
+    if (index >= HERO_SEQUENCE.length) {
+      heroHeadline.innerHTML = `<p class="hero__lead">${HERO_FINAL.text}</p>`;
+      heroHeadline.classList.add('is-final');
+    } else {
+      if (heroHeadline.classList.contains('is-final')) {
+        heroHeadline.innerHTML = `
+          <p class="hero__lead">Есть такой человек.</p>
+          <p class="hero__lead hero__role" id="heroRoleLine"></p>
+        `;
+        heroHeadline.classList.remove('is-final');
+      }
+      const roleLine = document.getElementById('heroRoleLine');
+      roleLine.textContent = HERO_SEQUENCE[index].role;
     }
+  }
 
-    showHeroStep(HERO_SEQUENCE[heroIndex]);
-  }, 1400);
+  function updateHero(progress01) {
+    const progress = progress01 * (totalSteps - 1);
+    const nearest = Math.round(progress);
+    renderHeroStep(nearest);
+
+    photos.forEach((el, i) => {
+      const diff = progress - i;
+      const opacity = Math.max(0, 1 - Math.abs(diff));
+      const y = diff * 35; // % vertical swipe
+      el.style.opacity = String(opacity);
+      el.style.transform = `translateY(${y}%)`;
+      el.style.zIndex = String(100 - Math.round(Math.abs(diff) * 10));
+    });
+  }
+
+  makeScrollProgress(heroPin, updateHero);
 }
 
 // ---------- Age counter ----------
@@ -74,42 +104,47 @@ function randomFakeAge() {
   return 50 + Math.floor(Math.random() * 40); // 50-89
 }
 
-countBtn?.addEventListener('click', () => {
-  if (countBtn.disabled) return;
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function spinDigitsFor(ms) {
+  return new Promise((resolve) => {
+    const iv = setInterval(() => {
+      ageCounterEl.textContent = String(Math.floor(Math.random() * 100));
+    }, 40);
+    setTimeout(() => {
+      clearInterval(iv);
+      resolve();
+    }, ms);
+  });
+}
+
+async function runAgeCounter() {
   countBtn.disabled = true;
   counterStatus.textContent = '';
   playSfx(sfxAirhorn);
 
-  const totalDurationMs = 4200;
-  const pauseHoldMs = 500;
-  const startTime = performance.now();
-  const pauses = [0.35, 0.6, 0.8].map((p) => p * totalDurationMs);
-  let nextPauseIdx = 0;
+  const pauseHoldMs = 1200;
+  const spinDurations = [1500, 900, 900, 900]; // time spinning before each pause + final landing
 
-  function tick() {
-    const elapsed = performance.now() - startTime;
-
-    if (nextPauseIdx < pauses.length && elapsed >= pauses[nextPauseIdx]) {
-      nextPauseIdx += 1;
-      ageCounterEl.textContent = randomFakeAge();
+  for (let i = 0; i < spinDurations.length; i += 1) {
+    await spinDigitsFor(spinDurations[i]);
+    if (i < spinDurations.length - 1) {
+      ageCounterEl.textContent = String(randomFakeAge());
       playSfx(sfxBadumtss);
-      setTimeout(tick, pauseHoldMs);
-      return;
+      await wait(pauseHoldMs);
     }
-
-    if (elapsed >= totalDurationMs) {
-      ageCounterEl.textContent = '45';
-      counterStatus.textContent = 'Посчитано!';
-      countBtn.disabled = false;
-      return;
-    }
-
-    ageCounterEl.textContent = Math.floor(Math.random() * 100);
-    const speed = 40 + (elapsed / totalDurationMs) * 80; // slows down over time
-    setTimeout(tick, speed);
   }
 
-  tick();
+  ageCounterEl.textContent = '45';
+  counterStatus.textContent = 'Посчитано!';
+  countBtn.disabled = false;
+}
+
+countBtn?.addEventListener('click', () => {
+  if (countBtn.disabled) return;
+  runAgeCounter();
 });
 
 // ---------- Gallery: scroll-driven pinned photo stack ----------
@@ -121,7 +156,7 @@ if (galleryPin && galleryStage) {
   const total = photos.length;
 
   function updateGalleryStage(progress01) {
-    const progress = Math.min(Math.max(progress01, 0), 1) * total;
+    const progress = progress01 * total;
 
     photos.forEach((el, i) => {
       const diff = progress - i;
@@ -158,34 +193,18 @@ if (galleryPin && galleryStage) {
     });
   }
 
-  let ticking = false;
-
-  function onGalleryScroll() {
-    if (ticking) return;
-    ticking = true;
-
-    requestAnimationFrame(() => {
-      const rect = galleryPin.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const scrollableDistance = galleryPin.offsetHeight - viewportHeight;
-      const scrolled = -rect.top;
-      const progress = scrollableDistance > 0 ? scrolled / scrollableDistance : 0;
-      updateGalleryStage(progress);
-      ticking = false;
-    });
-  }
-
-  window.addEventListener('scroll', onGalleryScroll, { passive: true });
-  window.addEventListener('resize', onGalleryScroll);
-  onGalleryScroll();
+  makeScrollProgress(galleryPin, updateGalleryStage);
 }
 
-// ---------- Video with center play button ----------
+// ---------- Video with center play button + click/tap to pause ----------
 function setupPlayButtonVideo(video, btn) {
   if (!video || !btn) return;
   btn.addEventListener('click', () => {
     video.play();
     btn.classList.add('is-hidden');
+  });
+  video.addEventListener('click', () => {
+    if (!video.paused) video.pause();
   });
   video.addEventListener('pause', () => btn.classList.remove('is-hidden'));
   video.addEventListener('ended', () => btn.classList.remove('is-hidden'));
@@ -286,17 +305,23 @@ if (peopleList && typeof GREETINGS !== 'undefined') {
   });
 }
 
-// ---------- Final ТОП / ЛЕС reveal ----------
-const finalSection = document.getElementById('final');
-if (finalSection) {
-  const finalObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        finalSection.classList.add('is-revealed');
-        finalObserver.unobserve(finalSection);
-      }
-    });
-  }, { threshold: 0.5 });
+// ---------- Final block: scroll-driven ТОП -> ЛЕС swap ----------
+const finalPin = document.getElementById('finalPin');
+const finalTop = document.getElementById('finalTop');
+const finalLes = document.getElementById('finalLes');
+const finalLesWord = document.getElementById('finalLesWord');
 
-  finalObserver.observe(finalSection);
+if (finalPin && finalTop && finalLes && finalLesWord) {
+  function updateFinal(progress) {
+    finalTop.style.opacity = String(1 - progress);
+    finalTop.style.transform = `rotate(${-2 + progress * 12}deg) translate(${progress * 70}px, ${progress * -50}px) scale(${1 - progress * 0.15})`;
+
+    finalLes.style.opacity = String(progress);
+    finalLes.style.transform = `rotate(${4 - progress * 1}deg) translate(${(1 - progress) * 40}px, ${(1 - progress) * 20}px) scale(${0.9 + progress * 0.1})`;
+
+    finalLesWord.style.opacity = String(progress);
+    finalLesWord.style.transform = `translateX(${(1 - progress) * -16}px)`;
+  }
+
+  makeScrollProgress(finalPin, updateFinal);
 }
