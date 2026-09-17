@@ -143,6 +143,12 @@
   <p>С любовью, твоя команда Irbis Team ❤️</p>
 </footer>
 
+<button class="sound-toggle" id="soundToggle" aria-pressed="false" aria-label="Включить музыку" hidden>🔈</button>
+
+<!-- Фоновая мелодия. Кнопка выше остаётся скрытой, пока файл не подгрузится,
+     поэтому отсутствие трека не ломает страницу. -->
+<audio id="bgMusic" loop preload="auto" src="assets/audio/background.mp3"></audio>
+
 <audio id="sfxBadumtss" preload="none" src="assets/audio/badumtss.mp3"></audio>
 <audio id="sfxAirhorn" preload="none" src="assets/audio/airhorn.mp3"></audio>
 

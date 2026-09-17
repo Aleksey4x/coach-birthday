@@ -270,8 +270,14 @@ voiceAudio?.addEventListener('ended', () => {
   tgVoice.classList.remove('is-playing');
 });
 
+// ---------- Background music with ducking ----------
+const bgMusic = document.getElementById('bgMusic');
+const soundToggle = document.getElementById('soundToggle');
+
+// Фоновая музыка не участвует во взаимной остановке — вместо паузы она приглушается
+const mediaEls = Array.from(document.querySelectorAll('audio, video')).filter((el) => el !== bgMusic);
+
 // Pause other audio/video when one starts playing
-const mediaEls = document.querySelectorAll('audio, video');
 mediaEls.forEach((media) => {
   media.addEventListener('play', () => {
     mediaEls.forEach((other) => {
@@ -279,6 +285,80 @@ mediaEls.forEach((media) => {
     });
   });
 });
+
+if (bgMusic && soundToggle) {
+  const MUSIC_VOLUME = 0.45;
+  const FADE_OUT_MS = 400;
+  const FADE_IN_MS = 900;
+
+  // Короткие эффекты счётчика играют поверх музыки и не приглушают её
+  const duckers = mediaEls.filter((el) => el !== sfxBadumtss && el !== sfxAirhorn);
+
+  let musicOn = false;
+  let fadeRaf = null;
+
+  function fadeMusicTo(target, durationMs, onDone) {
+    if (fadeRaf) cancelAnimationFrame(fadeRaf);
+    const from = bgMusic.volume;
+    const start = performance.now();
+
+    function step(now) {
+      const t = Math.min((now - start) / durationMs, 1);
+      bgMusic.volume = from + (target - from) * t;
+      if (t < 1) {
+        fadeRaf = requestAnimationFrame(step);
+      } else {
+        fadeRaf = null;
+        onDone?.();
+      }
+    }
+
+    fadeRaf = requestAnimationFrame(step);
+  }
+
+  const anyDuckerPlaying = () => duckers.some((el) => !el.paused && !el.ended);
+
+  function setToggleState() {
+    soundToggle.textContent = musicOn ? '🔊' : '🔈';
+    soundToggle.setAttribute('aria-pressed', String(musicOn));
+    soundToggle.setAttribute('aria-label', musicOn ? 'Выключить музыку' : 'Включить музыку');
+  }
+
+  // Кнопка появляется только когда трек реально доступен
+  bgMusic.addEventListener('canplay', () => { soundToggle.hidden = false; });
+  bgMusic.addEventListener('error', () => { soundToggle.hidden = true; });
+
+  soundToggle.addEventListener('click', async () => {
+    if (musicOn) {
+      fadeMusicTo(0, FADE_OUT_MS, () => bgMusic.pause());
+      musicOn = false;
+      setToggleState();
+      return;
+    }
+
+    bgMusic.volume = 0;
+    try {
+      await bgMusic.play();
+    } catch {
+      return; // браузер отказал в воспроизведении — состояние кнопки не меняем
+    }
+    musicOn = true;
+    setToggleState();
+    if (!anyDuckerPlaying()) fadeMusicTo(MUSIC_VOLUME, FADE_IN_MS);
+  });
+
+  duckers.forEach((media) => {
+    media.addEventListener('play', () => {
+      if (musicOn) fadeMusicTo(0, FADE_OUT_MS);
+    });
+
+    ['pause', 'ended'].forEach((evt) => {
+      media.addEventListener(evt, () => {
+        if (musicOn && !anyDuckerPlaying()) fadeMusicTo(MUSIC_VOLUME, FADE_IN_MS);
+      });
+    });
+  });
+}
 
 // ---------- Personal greeting cards (Telegram-style bubbles) ----------
 function getInitials(name) {
