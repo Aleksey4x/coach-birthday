@@ -248,6 +248,47 @@ if (rotatedVideo && rotatedWrap) {
   window.addEventListener('resize', fitRotatedVideo);
 }
 
+// ---------- "А так сможете?": видео фиксируется в центре, заголовок догоняет ----------
+const takPin = document.getElementById('takPin');
+const takHeading = document.getElementById('takHeading');
+
+if (takPin && takHeading && rotatedWrap) {
+  // Доли прогона, за которые каждый элемент доезжает до своего места.
+  // Видео проходит больший путь за меньшую долю прокрутки — то есть поднимается
+  // заметно быстрее, а заголовок отстаёт и как бы тянется за ним.
+  const VIDEO_ARRIVES_AT = 0.45;
+  const HEADING_ARRIVES_AT = 0.75;
+  const VIDEO_START_SHIFT = 0.45; // стартовое смещение вниз, в долях высоты экрана
+  const HEADING_START_SHIFT = 0.28;
+  const HEADING_TOP = 24; // совпадает с top у .tak-pin__heading
+  const MIN_CLEARANCE = 16;
+
+  makeScrollProgress(takPin, (progress) => {
+    const vh = window.innerHeight;
+    // Замеры делаем до записи стилей, чтобы не провоцировать лишний пересчёт лейаута
+    const videoHeight = rotatedWrap.offsetHeight;
+    const headingHeight = takHeading.offsetHeight;
+
+    const videoProgress = Math.min(progress / VIDEO_ARRIVES_AT, 1);
+    const headingProgress = Math.min(progress / HEADING_ARRIVES_AT, 1);
+
+    const videoShift = (1 - videoProgress) * vh * VIDEO_START_SHIFT;
+
+    // Заголовок не должен наезжать на видео: его смещение ограничено так, чтобы
+    // низ заголовка оставался выше верхней кромки припаркованного видео.
+    // На очень низких экранах это просто уменьшает ход заголовка.
+    const videoTopWhenParked = vh / 2 - videoHeight / 2;
+    const maxHeadingShift = Math.max(
+      0,
+      videoTopWhenParked - headingHeight - HEADING_TOP - MIN_CLEARANCE,
+    );
+    const headingShift = Math.min((1 - headingProgress) * vh * HEADING_START_SHIFT, maxHeadingShift);
+
+    rotatedWrap.style.transform = `translateY(calc(-50% + ${videoShift}px))`;
+    takHeading.style.transform = `translateY(${headingShift}px)`;
+  });
+}
+
 // ---------- Telegram-style voice message at 1.5x ----------
 const voiceAudio = document.getElementById('voiceAudio');
 const voicePlayBtn = document.getElementById('voicePlayBtn');

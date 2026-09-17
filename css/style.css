@@ -422,6 +422,42 @@ a { color: inherit; }
 
 .video-embed__play.is-hidden { display: none; }
 
+/* "А так сможете?": видео приезжает в центр экрана и фиксируется там,
+   заголовок догоняет его медленнее и встаёт к верхней кромке.
+   Положение обоих считает JS от прогресса прокрутки, поэтому класса
+   .reveal здесь быть не должно — его transition размазывал бы движение. */
+.tak-pin {
+  position: relative;
+  height: 200vh; /* экран на "сборку" кадра + экран удержания */
+}
+
+.tak-pin__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.tak-pin__heading {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  right: 0;
+  z-index: 3;
+  margin: 0;
+  will-change: transform;
+}
+
+.tak-pin__video {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  max-width: var(--max-width);
+  will-change: transform;
+}
+
 .video-embed--rotated {
   aspect-ratio: 16 / 9;
   position: relative;
