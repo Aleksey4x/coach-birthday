@@ -140,13 +140,15 @@ a { color: inherit; }
   object-fit: cover;
 }
 
-/* Финальный кадр — вырезанный PNG без фона, поэтому без рамки и целиком */
+/* Финальный кадр — вырезанный PNG без фона, поэтому без рамки.
+   Размер ровно по сцене: при размере больше контейнера margin: auto перестаёт
+   центрировать и прижимает кадр к левому верхнему углу */
 .hero-slide--final {
   background: none;
   padding: 0;
   box-shadow: none;
-  width: min(172vw, 840px);
-  height: 120vh;
+  width: 100%;
+  height: 100%;
 }
 
 .hero-slide--final img {
