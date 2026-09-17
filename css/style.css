@@ -29,9 +29,10 @@ body {
     repeating-linear-gradient(
       100deg,
       transparent 0,
-      transparent var(--line-gap),
+      transparent calc(var(--line-gap) - 1px),
       var(--line) var(--line-gap),
-      var(--line) calc(var(--line-gap) + var(--line-width))
+      var(--line) calc(var(--line-gap) + var(--line-width)),
+      transparent calc(var(--line-gap) + var(--line-width) + 1px)
     );
   background-attachment: fixed;
 }
@@ -151,6 +152,11 @@ a { color: inherit; }
   border-radius: 2px;
   box-shadow: 0 12px 24px rgba(0,0,0,0.35);
   transform: rotate(-2deg);
+}
+
+.reel-card--final img {
+  object-fit: contain;
+  background: var(--line);
 }
 
 .reel-card__label {
