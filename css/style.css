@@ -103,6 +103,7 @@ a { color: inherit; }
   height: auto;
   object-fit: contain;
   align-self: flex-start;
+  margin-left: 16px; /* выравнивает логотип по левому краю текста заголовка */
 }
 
 .hero__stage {
@@ -601,9 +602,10 @@ a { color: inherit; }
 }
 
 /* ---------- Sound check ---------- */
-/* top отступает от бегущей строки, чтобы кнопка её не перекрывала */
+/* absolute, а не fixed — кнопка уезжает вверх вместе со страницей.
+   top отступает от бегущей строки, чтобы кнопка её не перекрывала */
 .sound-check {
-  position: fixed;
+  position: absolute;
   top: 52px;
   right: 16px;
   z-index: 100;
