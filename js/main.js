@@ -45,7 +45,7 @@ const heroHeadline = document.getElementById('heroHeadline');
 const heroRoleLine = document.getElementById('heroRoleLine');
 
 if (heroPin && heroPhotos && heroHeadline && heroRoleLine && typeof HERO_SEQUENCE !== 'undefined') {
-  const photos = Array.from(heroPhotos.querySelectorAll('.hero__photo'));
+  const photos = Array.from(heroPhotos.querySelectorAll('.hero-slide'));
   const totalSteps = photos.length; // 8 roles + 1 final
   let renderedIndex = -1;
 
@@ -69,18 +69,27 @@ if (heroPin && heroPhotos && heroHeadline && heroRoleLine && typeof HERO_SEQUENC
     }
   }
 
+  // Кадр едет по эллиптической дуге: входит снизу-слева, замирает в центре, уходит вправо-вверх.
+  // t = -1 (ещё не пришёл) .. 0 (в центре) .. 1 (уже улетел)
+  const ARC_X = 135; // ход по горизонтали, % от размера кадра
+  const ARC_LIFT = 75; // подъём к моменту вылета
+  const ARC_BULGE = 30; // прогиб дуги, за счёт него траектория не прямая
+
   function updateHero(progress01) {
     const progress = progress01 * (totalSteps - 1);
-    const nearest = Math.round(progress);
-    renderHeroStep(nearest);
+    renderHeroStep(Math.round(progress));
 
     photos.forEach((el, i) => {
-      const diff = progress - i;
-      const opacity = Math.max(0, 1 - Math.abs(diff));
-      const y = diff * 35; // % vertical swipe
-      el.style.opacity = String(opacity);
-      el.style.transform = `translateY(${y}%)`;
-      el.style.zIndex = String(100 - Math.round(Math.abs(diff) * 10));
+      const t = Math.max(-1, Math.min(1, progress - i));
+      const angle = (t * Math.PI) / 2;
+      const x = ARC_X * Math.sin(angle);
+      const y = -ARC_LIFT * Math.sin(angle) + ARC_BULGE * (1 - Math.cos(angle));
+
+      // Кадр целиком уезжает за пределы сцены, поэтому прозрачность нужна
+      // только чтобы полностью убрать уже отыгравшие кадры.
+      el.style.opacity = Math.abs(progress - i) >= 1 ? '0' : '1';
+      el.style.transform = `translate(${x}%, ${y}%) rotate(${t * 16}deg) scale(${1 - Math.abs(t) * 0.12})`;
+      el.style.zIndex = String(totalSteps - i);
     });
   }
 
