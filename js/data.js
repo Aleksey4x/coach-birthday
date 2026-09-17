@@ -1,3 +1,21 @@
+// Hero: последовательность "Он — {роль}", каждая роль меняет фото и подпись.
+// Последний пункт — punchline, полностью заменяет заголовок на "Это Стас!".
+const HERO_SEQUENCE = [
+  { role: "Тренер", img: "assets/img/hero/trener.jpg" },
+  { role: "Трейлраннер", img: "assets/img/hero/trailrunner.jpg" },
+  { role: "он же Скайраннер", img: "assets/img/hero/skyrunner.jpg" },
+  { role: "он же Бегун", img: "assets/img/hero/trailrunner.jpg" },
+  { role: "Альпинист", img: "assets/img/hero/alpinist.png" },
+  { role: "Отец", img: "assets/img/hero/otec.png" },
+  { role: "Путешественник", img: "assets/img/hero/puteshestvennik.png" },
+  { role: "И крайне весёлый человек", img: "assets/img/hero/veselyi-chelovek.jpg" },
+];
+
+const HERO_FINAL = {
+  text: "Это Стас! (справа)",
+  img: "assets/img/hero/eto-stas.png",
+};
+
 // Личные поздравления из чата (поздравления в чате.txt), в хронологическом порядке.
 // avatar: null -> у человека нет присланной аватарки, рендерится плашка с инициалами.
 const GREETINGS = [

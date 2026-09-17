@@ -25,49 +25,12 @@
 <header class="hero" id="hero">
   <img class="hero__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
 
-  <div class="hero__grid">
-    <div class="hero__static">
+  <div class="hero__stage" id="heroStage">
+    <img class="hero__photo" id="heroPhoto" src="assets/img/hero/trener.jpg" alt="Тренер">
+    <div class="hero__scrim"></div>
+    <div class="hero__headline" id="heroHeadline">
       <p class="hero__lead">Есть такой человек.</p>
-      <p class="hero__lead">Он&nbsp;&mdash;</p>
-    </div>
-
-    <div class="hero__reel" id="heroReel">
-      <div class="reel-card is-active" data-role="Тренер">
-        <img src="assets/img/hero/trener.jpg" alt="Тренер">
-        <span class="reel-card__label">Тренер</span>
-      </div>
-      <div class="reel-card" data-role="Трейлраннер">
-        <img src="assets/img/hero/trailrunner.jpg" alt="Трейлраннер">
-        <span class="reel-card__label">Трейлраннер</span>
-      </div>
-      <div class="reel-card" data-role="он же Скайраннер">
-        <img src="assets/img/hero/skyrunner.jpg" alt="Скайраннер">
-        <span class="reel-card__label">он же Скайраннер</span>
-      </div>
-      <div class="reel-card" data-role="он же Бегун">
-        <img src="assets/img/hero/trailrunner.jpg" alt="Бегун">
-        <span class="reel-card__label">он же Бегун</span>
-      </div>
-      <div class="reel-card" data-role="Альпинист">
-        <img src="assets/img/hero/alpinist.png" alt="Альпинист">
-        <span class="reel-card__label">Альпинист</span>
-      </div>
-      <div class="reel-card" data-role="Отец">
-        <img src="assets/img/hero/otec.png" alt="Отец">
-        <span class="reel-card__label">Отец</span>
-      </div>
-      <div class="reel-card" data-role="Путешественник">
-        <img src="assets/img/hero/puteshestvennik.png" alt="Путешественник">
-        <span class="reel-card__label">Путешественник</span>
-      </div>
-      <div class="reel-card" data-role="И крайне весёлый человек">
-        <img src="assets/img/hero/veselyi-chelovek.jpg" alt="Крайне весёлый человек">
-        <span class="reel-card__label">И крайне весёлый человек</span>
-      </div>
-      <div class="reel-card reel-card--final" data-role="Это Стас! (справа)">
-        <img src="assets/img/hero/eto-stas.png" alt="Это Стас! (справа)">
-        <span class="reel-card__label reel-card__label--final">Это Стас! (справа)</span>
-      </div>
+      <p class="hero__lead">Он&nbsp;&mdash; <span id="heroRoleWord">Тренер</span></p>
     </div>
   </div>
 
@@ -83,34 +46,47 @@
       <p class="reveal section__text">Ему исполнилось</p>
       <div class="counter__display reveal" id="ageCounter">?</div>
       <p class="reveal section__text">лет!</p>
-      <button class="btn reveal" id="countBtn">Посчитать, сколько лет</button>
+      <p class="counter__status" id="counterStatus"></p>
+      <button class="btn reveal" id="countBtn">Посчитать</button>
     </div>
   </section>
 
   <section class="section section--gallery" id="gallery">
-    <h2 class="section__title reveal">Фотографии</h2>
-    <div class="gallery-stack" id="galleryStack">
-      <div class="polaroid" style="--r:-6deg"><img src="assets/img/gallery/gallery-1.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:4deg"><img src="assets/img/gallery/gallery-2.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:-3deg"><img src="assets/img/gallery/gallery-3.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:7deg"><img src="assets/img/gallery/gallery-4.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:-8deg"><img src="assets/img/gallery/gallery-5.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:2deg"><img src="assets/img/gallery/gallery-6.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:-5deg"><img src="assets/img/gallery/gallery-7.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:6deg"><img src="assets/img/gallery/gallery-8.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:-2deg"><img src="assets/img/gallery/gallery-9.jpg" alt="" loading="lazy"></div>
-      <div class="polaroid" style="--r:5deg"><img src="assets/img/gallery/gallery-10.jpg" alt="" loading="lazy"></div>
+    <div class="gallery-pin" id="galleryPin">
+      <div class="gallery-pin__sticky">
+        <h2 class="section__title">У Стаса есть команда</h2>
+
+        <div class="gallery-pin__stage" id="galleryStage">
+          <div class="polaroid" style="--r:-6deg" data-index="0"><img src="assets/img/gallery/gallery-1.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:4deg" data-index="1"><img src="assets/img/gallery/gallery-2.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:-3deg" data-index="2"><img src="assets/img/gallery/gallery-3.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:7deg" data-index="3"><img src="assets/img/gallery/gallery-4.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:-8deg" data-index="4"><img src="assets/img/gallery/gallery-5.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:2deg" data-index="5"><img src="assets/img/gallery/gallery-6.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:-5deg" data-index="6"><img src="assets/img/gallery/gallery-7.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:6deg" data-index="7"><img src="assets/img/gallery/gallery-8.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:-2deg" data-index="8"><img src="assets/img/gallery/gallery-9.jpg" alt="" loading="lazy"></div>
+          <div class="polaroid" style="--r:5deg" data-index="9"><img src="assets/img/gallery/gallery-10.jpg" alt="" loading="lazy"></div>
+        </div>
+
+        <div class="gallery-pin__brand">
+          <p class="gallery-pin__subtitle">IRBIS TEAM</p>
+          <img class="gallery-pin__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="section section--media" id="media">
-    <h2 class="section__title reveal">Что говорит Стас, когда недельный объём 120+?</h2>
+    <h2 class="section__title reveal">Что говорит Стас...</h2>
+
+    <h3 class="section__subtitle reveal">когда недельный объём 120+ км?</h3>
     <div class="video-embed reveal" id="povVideoWrap">
       <video id="povVideo" playsinline preload="metadata" poster="" src="assets/video/pov.mp4"></video>
       <button class="video-embed__play" id="povPlayBtn" aria-label="Воспроизвести видео">▶</button>
     </div>
 
-    <h2 class="section__title reveal">Что говорит Стас, если вам неохота идти на тренировку?</h2>
+    <h3 class="section__subtitle reveal">когда вам неохота идти на тренировку?</h3>
     <div class="tg-voice reveal">
       <button class="tg-voice__play" id="voicePlayBtn" aria-label="Воспроизвести голосовое">▶</button>
       <div class="tg-voice__wave">
@@ -118,7 +94,7 @@
         <span></span><span></span><span></span><span></span><span></span>
       </div>
       <span class="tg-voice__speed">1.5x</span>
-      <audio id="voiceAudio" preload="none" src="assets/audio/neohota.ogg"></audio>
+      <audio id="voiceAudio" preload="none" src="assets/audio/neohota.mp3"></audio>
     </div>
 
     <h2 class="section__title reveal">А так сможете?</h2>
@@ -129,22 +105,22 @@
   </section>
 
   <section class="section section--people" id="people">
-    <h2 class="section__title reveal">Поздравляет команда</h2>
+    <h2 class="section__title reveal">Принимай поздравления</h2>
     <div class="people-list" id="peopleList"></div>
   </section>
 
   <section class="section section--final" id="final">
+    <h2 class="final-heading reveal">
+      Короче, наш тренер <span id="finalTopWord">ТОП</span><span class="final-heading__les" id="finalLesWord">ЛЕС</span>
+    </h2>
     <div class="final-stage" id="finalStage">
       <div class="final-photo final-photo--top" id="finalTop">
         <img src="assets/img/final/top.jpg" alt="ТОП">
-        <span class="final-photo__tag">ТОП</span>
       </div>
       <div class="final-photo final-photo--les" id="finalLes">
         <img src="assets/img/final/les.jpg" alt="ЛЕС">
-        <span class="final-photo__tag">ЛЕС</span>
       </div>
     </div>
-    <p class="final-caption reveal">Короче, наш тренер&nbsp;&mdash; ТОПЛЕС</p>
   </section>
 
 </main>

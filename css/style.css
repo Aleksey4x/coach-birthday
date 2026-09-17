@@ -2,6 +2,7 @@
   --track: #5c1a22;
   --track-dark: #3c1017;
   --line: #afa597;
+  --frame: #f4ece0;
   --text: #fdf6ec;
   --text-muted: #d9c3b6;
   --accent: #ffb400;
@@ -63,9 +64,9 @@ a { color: inherit; }
   white-space: nowrap;
   width: max-content;
   animation: marquee 14s linear infinite;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.1rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--accent);
@@ -84,103 +85,73 @@ a { color: inherit; }
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 32px 20px 64px;
-  gap: 24px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 24px 20px 64px;
+  gap: 16px;
   overflow: hidden;
 }
 
 .hero__logo {
-  width: 84px;
+  width: 72px;
   height: auto;
   object-fit: contain;
+  align-self: center;
 }
 
-.hero__grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
+.hero__stage {
+  position: relative;
   width: 100%;
-  max-width: var(--max-width);
+  flex: 1;
+  min-height: 52vh;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
 }
 
-.hero__static {
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.4s ease;
+}
+
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(60,16,23,0.9) 0%, rgba(60,16,23,0.55) 30%, rgba(60,16,23,0) 55%);
+  pointer-events: none;
+}
+
+.hero__headline {
+  position: relative;
+  z-index: 2;
+  text-align: left;
   font-family: var(--font-display);
-  font-size: clamp(2rem, 9vw, 3rem);
-  font-weight: 700;
-  line-height: 1.1;
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
+  font-weight: 400;
+  line-height: 1.15;
+  padding: 16px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hero__headline.is-final {
+  font-size: clamp(2.4rem, 10vw, 3.6rem);
+  color: var(--accent);
 }
 
 .hero__lead { margin: 0; }
 
-.hero__reel {
-  position: relative;
-  width: 100%;
-  max-width: 280px;
-  height: 340px;
-}
-
-.reel-card {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  opacity: 0;
-  transform: translateY(24px) scale(0.92);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  pointer-events: none;
-}
-
-.reel-card.is-active {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-
-.reel-card img {
-  width: 220px;
-  height: 220px;
-  object-fit: cover;
-  border: 10px solid var(--line);
-  border-bottom-width: 36px;
-  border-radius: 2px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.35);
-  transform: rotate(-2deg);
-}
-
-.reel-card--final img {
-  object-fit: contain;
-  background: var(--line);
-}
-
-.reel-card__label {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: 1.3rem;
-  background: var(--track-dark);
-  border: 2px dashed var(--accent);
-  color: var(--accent-2);
-  padding: 6px 16px;
-  border-radius: 999px;
-}
-
-.reel-card__label--final {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  background: none;
-  border: none;
+.hero__lead span#heroRoleWord {
   color: var(--accent);
+  transition: opacity 0.3s ease;
 }
 
 .hero__scroll {
-  position: absolute;
-  bottom: 16px;
+  align-self: center;
   background: none;
   border: none;
   color: var(--text-muted);
@@ -253,17 +224,24 @@ a { color: inherit; }
 }
 
 .counter__display {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: clamp(4rem, 22vw, 7rem);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--accent);
   line-height: 1;
   margin: 16px 0;
   font-variant-numeric: tabular-nums;
 }
 
+.counter__status {
+  min-height: 1.4em;
+  margin: 0;
+  font-weight: 500;
+  color: var(--accent-2);
+}
+
 .btn {
-  margin-top: 16px;
+  margin-top: 8px;
   padding: 14px 28px;
   border-radius: 999px;
   border: 3px solid var(--accent);
@@ -277,43 +255,80 @@ a { color: inherit; }
 
 .btn:hover { transform: translateY(-2px); }
 .btn:active { transform: translateY(0) scale(0.97); }
+.btn:disabled { opacity: 0.6; cursor: default; transform: none; }
 
-/* ---------- Gallery ---------- */
-.gallery-stack {
-  display: flex;
-  gap: 20px;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  padding: 24px 8px 32px;
-  -webkit-overflow-scrolling: touch;
+/* ---------- Gallery (pinned scroll-through stage) ---------- */
+.section--gallery {
+  max-width: none;
+  padding: 0;
 }
 
-.gallery-stack::-webkit-scrollbar { height: 6px; }
-.gallery-stack::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+.gallery-pin {
+  position: relative;
+  height: 560vh; /* runway for 10 photos, tune if photo count changes */
+}
+
+.gallery-pin__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 24px 20px;
+  gap: 16px;
+}
+
+.gallery-pin__stage {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  height: 260px;
+}
 
 .polaroid {
-  flex: 0 0 auto;
-  scroll-snap-align: center;
-  background: var(--line);
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 220px;
+  height: 260px;
+  background: var(--frame);
   padding: 10px 10px 28px;
   border-radius: 2px;
   box-shadow: 0 10px 20px rgba(0,0,0,0.35);
-  transform: rotate(var(--r, 0deg));
-  transition: transform 0.25s ease;
+  will-change: transform, opacity;
 }
 
-.polaroid:hover { transform: rotate(0deg) scale(1.03); }
-
 .polaroid img {
-  width: 220px;
-  height: 220px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+}
+
+.gallery-pin__brand {
+  text-align: center;
+}
+
+.gallery-pin__subtitle {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin: 0 0 8px;
+}
+
+.gallery-pin__logo {
+  width: 48px;
+  margin: 0 auto;
+  opacity: 0.9;
 }
 
 /* ---------- Media section ---------- */
 .video-embed {
   position: relative;
-  border: 10px solid var(--line);
+  border: 10px solid var(--frame);
   border-radius: 4px;
   overflow: hidden;
   box-shadow: 0 12px 24px rgba(0,0,0,0.35);
@@ -429,7 +444,7 @@ a { color: inherit; }
   border-radius: 999px;
 }
 
-/* ---------- People ---------- */
+/* ---------- People: Telegram-style bubbles ---------- */
 .people-list {
   display: flex;
   flex-direction: column;
@@ -438,20 +453,16 @@ a { color: inherit; }
 
 .people-card {
   display: flex;
-  gap: 12px;
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(244,236,224,0.15);
-  border-radius: var(--radius);
-  padding: 14px;
+  gap: 8px;
+  align-items: flex-start;
 }
 
 .people-card__avatar {
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   object-fit: cover;
   flex: none;
-  border: 2px solid var(--accent);
 }
 
 .people-card__avatar--initials {
@@ -461,27 +472,59 @@ a { color: inherit; }
   background: var(--track-dark);
   color: var(--accent);
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
-.people-card__body { flex: 1; min-width: 0; }
+.people-card__bubble {
+  background: #fff;
+  color: #1c1c1c;
+  border-radius: 2px 14px 14px 14px;
+  padding: 8px 12px;
+  max-width: calc(100% - 48px);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
 
 .people-card__name {
-  font-weight: 800;
-  margin: 0 0 4px;
-  color: var(--accent-2);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin: 0 0 2px;
+  color: #b3261e;
 }
 
 .people-card__message {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--text);
+  line-height: 1.4;
 }
 
 /* ---------- Final block ---------- */
 .section--final {
   text-align: center;
   padding-bottom: 96px;
+}
+
+.final-heading {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
+  margin: 0 0 32px;
+}
+
+.final-heading #finalTopWord {
+  color: var(--accent);
+}
+
+.final-heading__les {
+  display: inline-block;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.section--final.is-revealed .final-heading__les {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .final-stage {
@@ -494,8 +537,8 @@ a { color: inherit; }
 
 .final-photo {
   position: absolute;
-  background: var(--line);
-  padding: 10px 10px 28px;
+  background: var(--frame);
+  padding: 10px;
   border-radius: 2px;
   box-shadow: 0 12px 24px rgba(0,0,0,0.35);
   transition: transform 0.6s ease, opacity 0.6s ease;
@@ -503,45 +546,31 @@ a { color: inherit; }
 
 .final-photo img {
   width: 200px;
-  height: 240px;
+  height: 260px;
   object-fit: cover;
 }
 
-.final-photo__tag {
-  position: absolute;
-  bottom: -6px;
-  left: 50%;
-  transform: translate(-50%, 100%);
-  font-family: var(--font-display);
-  font-size: 2rem;
-  color: var(--accent);
-  white-space: nowrap;
-}
-
 .final-photo--top {
-  transform: rotate(-4deg) translateX(0);
+  transform: rotate(-2deg) translate(0, 0) scale(1);
   z-index: 2;
 }
 
 .final-photo--les {
-  transform: rotate(5deg) translateX(60px);
+  transform: rotate(4deg) translate(40px, 20px) scale(0.9);
   opacity: 0;
   z-index: 1;
 }
 
 .section--final.is-revealed .final-photo--top {
-  transform: rotate(-8deg) translateX(-70px);
+  transform: rotate(10deg) translate(70px, -50px) scale(0.85);
+  opacity: 0;
+  z-index: 1;
 }
 
 .section--final.is-revealed .final-photo--les {
-  transform: rotate(5deg) translateX(70px);
+  transform: rotate(3deg) translate(0, 0) scale(1);
   opacity: 1;
-}
-
-.final-caption {
-  font-family: var(--font-display);
-  font-size: 2rem;
-  margin-top: 32px;
+  z-index: 2;
 }
 
 /* ---------- Footer ---------- */
@@ -571,11 +600,5 @@ a { color: inherit; }
 
 /* ---------- Tablet+ ---------- */
 @media (min-width: 640px) {
-  .hero__grid {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-  }
-
-  .hero__static { text-align: left; }
+  .people-card__bubble { max-width: 60%; }
 }
