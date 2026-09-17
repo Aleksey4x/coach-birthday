@@ -226,12 +226,12 @@ a { color: inherit; }
   align-items: center;
 }
 
-/* Фото шире блока, чтобы кадр был крупнее: 15% уходит за левый край, 10% за правый */
+/* Всегда заполняет блок целиком: cover зумит фото под ширину и обрезает
+   лишнее, поэтому пустых областей не остаётся ни при какой ширине экрана */
 .counter__bg-photo {
   position: absolute;
-  top: 0;
-  left: -15%;
-  width: 125%;
+  inset: 0;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   opacity: 0.18;
@@ -255,6 +255,10 @@ a { color: inherit; }
 .counter__content .section__subtitle {
   align-self: stretch;
 }
+
+/* Подзаголовок прижат к заголовку (в остальных блоках отступ остаётся прежним) */
+.counter__content .section__title { margin-bottom: 4px; }
+.counter__content .section__subtitle { margin-top: 0; }
 
 .counter__display {
   font-family: var(--font-body);

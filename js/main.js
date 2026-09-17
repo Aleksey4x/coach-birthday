@@ -134,8 +134,9 @@ async function runAgeCounter() {
   counterStatus.textContent = '';
   playSfx(sfxAirhorn);
 
-  const pauseHoldMs = 1200;
-  const spinDurations = [1500, 900, 900, 900]; // time spinning before each pause + final landing
+  // Прогон 5с -> остановка 3с -> прогон 3с -> остановка 3с -> прогон 2с -> 45
+  const pauseHoldMs = 3000;
+  const spinDurations = [5000, 3000, 2000];
 
   for (let i = 0; i < spinDurations.length; i += 1) {
     await spinDigitsFor(spinDurations[i]);
