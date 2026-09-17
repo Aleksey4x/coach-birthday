@@ -333,8 +333,12 @@ if (bgMusic && soundToggle) {
     soundToggle.setAttribute('aria-label', musicOn ? 'Выключить музыку' : 'Включить музыку');
   }
 
-  // Кнопка появляется только когда трек реально доступен
-  bgMusic.addEventListener('canplay', () => { soundToggle.hidden = false; });
+  // Кнопка появляется только когда трек реально доступен.
+  // readyState проверяем сразу: если файл уже в кеше, canplay успевает
+  // выстрелить до навешивания обработчика, и событие будет пропущено.
+  const revealToggle = () => { soundToggle.hidden = false; };
+  if (bgMusic.readyState >= 3) revealToggle(); // HAVE_FUTURE_DATA
+  bgMusic.addEventListener('canplay', revealToggle);
   bgMusic.addEventListener('error', () => { soundToggle.hidden = true; });
 
   soundToggle.addEventListener('click', async () => {
