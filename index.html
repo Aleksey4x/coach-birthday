@@ -3,78 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>С Днём Рождения, Тренер!</title>
-<meta name="description" content="Поздравление тренеру от команды">
+<title>С Днём Рождения, Стас!</title>
+<meta name="description" content="Поздравление тренеру Стасу от команды Irbis Team">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
+<div class="marquee" aria-hidden="false">
+  <div class="marquee__track">
+    <span>🔊 Сначала включи звук!</span>
+    <span>🔊 Сначала включи звук!</span>
+    <span>🔊 Сначала включи звук!</span>
+    <span>🔊 Сначала включи звук!</span>
+    <span>🔊 Сначала включи звук!</span>
+    <span>🔊 Сначала включи звук!</span>
+  </div>
+</div>
+
 <header class="hero" id="hero">
-  <img class="hero__logo" src="assets/logo/logo.png" alt="Логотип команды" onerror="this.style.display='none'">
-  <h1 class="hero__title reveal">С Днём Рождения!</h1>
-  <p class="hero__subtitle reveal">Поздравляем нашего тренера от всей команды</p>
+  <img class="hero__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
+
+  <div class="hero__grid">
+    <div class="hero__static">
+      <p class="hero__lead">Есть такой человек.</p>
+      <p class="hero__lead">Он&nbsp;&mdash;</p>
+    </div>
+
+    <div class="hero__reel" id="heroReel">
+      <div class="reel-card is-active" data-role="Тренер">
+        <img src="assets/img/hero/trener.jpg" alt="Тренер">
+        <span class="reel-card__label">Тренер</span>
+      </div>
+      <div class="reel-card" data-role="Трейлраннер">
+        <img src="assets/img/hero/trailrunner.jpg" alt="Трейлраннер">
+        <span class="reel-card__label">Трейлраннер</span>
+      </div>
+      <div class="reel-card" data-role="он же Скайраннер">
+        <img src="assets/img/hero/skyrunner.jpg" alt="Скайраннер">
+        <span class="reel-card__label">он же Скайраннер</span>
+      </div>
+      <div class="reel-card" data-role="он же Бегун">
+        <img src="assets/img/hero/trailrunner.jpg" alt="Бегун">
+        <span class="reel-card__label">он же Бегун</span>
+      </div>
+      <div class="reel-card" data-role="Альпинист">
+        <img src="assets/img/hero/alpinist.png" alt="Альпинист">
+        <span class="reel-card__label">Альпинист</span>
+      </div>
+      <div class="reel-card" data-role="Отец">
+        <img src="assets/img/hero/otec.png" alt="Отец">
+        <span class="reel-card__label">Отец</span>
+      </div>
+      <div class="reel-card" data-role="Путешественник">
+        <img src="assets/img/hero/puteshestvennik.png" alt="Путешественник">
+        <span class="reel-card__label">Путешественник</span>
+      </div>
+      <div class="reel-card" data-role="И крайне весёлый человек">
+        <img src="assets/img/hero/veselyi-chelovek.jpg" alt="Крайне весёлый человек">
+        <span class="reel-card__label">И крайне весёлый человек</span>
+      </div>
+      <div class="reel-card reel-card--final" data-role="Это Стас!">
+        <!-- TODO: заменить на отдельное финальное фото Стаса -->
+        <img src="assets/img/hero/veselyi-chelovek.jpg" alt="Это Стас!">
+        <span class="reel-card__label reel-card__label--final">Это Стас!</span>
+      </div>
+    </div>
+  </div>
+
   <button class="hero__scroll" id="scrollDown" aria-label="Пролистать вниз">↓</button>
 </header>
 
 <main>
 
-  <section class="section" id="message">
-    <h2 class="section__title reveal">Наши слова</h2>
-    <div class="message reveal">
-      <p>
-        <!-- TODO: вставить текст поздравления от команды -->
-        Здесь будет тёплый текст поздравления от команды.
-      </p>
+  <section class="section section--counter" id="counter">
+    <img class="counter__bg-photo" src="assets/img/misc/den-rozhdeniya.jpg" alt="" loading="lazy">
+    <div class="counter__content">
+      <p class="reveal section__text">15 сентября у Стаса был день рождения!</p>
+      <p class="reveal section__text">Ему исполнилось</p>
+      <div class="counter__display reveal" id="ageCounter">?</div>
+      <p class="reveal section__text">лет!</p>
+      <button class="btn reveal" id="countBtn">Посчитать, сколько лет</button>
     </div>
   </section>
 
-  <section class="section" id="achievements">
-    <h2 class="section__title reveal">Твои заслуги</h2>
-    <ul class="achievements__list">
-      <!-- TODO: перечень заслуг -->
-      <li class="achievements__item reveal">Заслуга №1</li>
-      <li class="achievements__item reveal">Заслуга №2</li>
-      <li class="achievements__item reveal">Заслуга №3</li>
-    </ul>
-  </section>
-
-  <section class="section" id="gallery">
+  <section class="section section--gallery" id="gallery">
     <h2 class="section__title reveal">Фотографии</h2>
-    <div class="gallery" id="galleryGrid">
-      <!-- TODO: сюда фото, например: -->
-      <!-- <img src="assets/img/photo1.jpg" alt="" loading="lazy"> -->
+    <div class="gallery-stack" id="galleryStack">
+      <div class="polaroid" style="--r:-6deg"><img src="assets/img/gallery/gallery-1.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:4deg"><img src="assets/img/gallery/gallery-2.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:-3deg"><img src="assets/img/gallery/gallery-3.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:7deg"><img src="assets/img/gallery/gallery-4.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:-8deg"><img src="assets/img/gallery/gallery-5.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:2deg"><img src="assets/img/gallery/gallery-6.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:-5deg"><img src="assets/img/gallery/gallery-7.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:6deg"><img src="assets/img/gallery/gallery-8.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:-2deg"><img src="assets/img/gallery/gallery-9.jpg" alt="" loading="lazy"></div>
+      <div class="polaroid" style="--r:5deg"><img src="assets/img/gallery/gallery-10.jpg" alt="" loading="lazy"></div>
     </div>
   </section>
 
-  <section class="section" id="video">
-    <h2 class="section__title reveal">Видео</h2>
-    <div class="video-grid" id="videoGrid">
-      <!-- TODO: сюда видео, например: -->
-      <!-- <video controls playsinline preload="metadata" src="assets/video/clip1.mp4"></video> -->
+  <section class="section section--media" id="media">
+    <h2 class="section__title reveal">Что говорит Стас, когда недельный объём 120+?</h2>
+    <div class="video-embed reveal" id="povVideoWrap">
+      <video id="povVideo" playsinline preload="metadata" poster="" src="assets/video/pov.mp4"></video>
+      <button class="video-embed__play" id="povPlayBtn" aria-label="Воспроизвести видео">▶</button>
     </div>
-  </section>
 
-  <section class="section" id="audio">
-    <h2 class="section__title reveal">Голосовые сообщения</h2>
-    <div class="audio-list" id="audioList">
-      <!-- TODO: сюда аудио, например: -->
-      <!--
-      <div class="audio-item reveal">
-        <span class="audio-item__name">Имя</span>
-        <audio controls preload="none" src="assets/audio/message1.mp3"></audio>
+    <h2 class="section__title reveal">Что говорит Стас, если вам неохота идти на тренировку?</h2>
+    <div class="tg-voice reveal">
+      <button class="tg-voice__play" id="voicePlayBtn" aria-label="Воспроизвести голосовое">▶</button>
+      <div class="tg-voice__wave">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
       </div>
-      -->
+      <span class="tg-voice__speed">1.5x</span>
+      <audio id="voiceAudio" preload="none" src="assets/audio/neohota.ogg"></audio>
     </div>
+
+    <h3 class="section__subtitle reveal">Бонус: ещё немного контента</h3>
+    <div class="bonus-reel" id="bonusReel">
+      <video controls playsinline preload="none" src="assets/video/bonus-1.mov"></video>
+      <video controls playsinline preload="none" src="assets/video/bonus-2.mp4"></video>
+      <video controls playsinline preload="none" src="assets/video/bonus-3.mp4"></video>
+      <video controls playsinline preload="none" src="assets/video/bonus-song.mp4"></video>
+    </div>
+  </section>
+
+  <section class="section section--people" id="people">
+    <h2 class="section__title reveal">Поздравляет команда</h2>
+    <div class="people-list" id="peopleList"></div>
+  </section>
+
+  <section class="section section--final" id="final">
+    <div class="final-stage" id="finalStage">
+      <div class="final-photo final-photo--top" id="finalTop">
+        <img src="assets/img/final/top.jpg" alt="ТОП">
+        <span class="final-photo__tag">ТОП</span>
+      </div>
+      <div class="final-photo final-photo--les" id="finalLes">
+        <img src="assets/img/final/les.jpg" alt="ЛЕС">
+        <span class="final-photo__tag">ЛЕС</span>
+      </div>
+    </div>
+    <p class="final-caption reveal">Короче, наш тренер&nbsp;&mdash; ТОПЛЕС</p>
   </section>
 
 </main>
 
 <footer class="footer">
-  <p>С любовью, твоя команда ❤️</p>
+  <img class="footer__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
+  <p>С любовью, твоя команда Irbis Team ❤️</p>
 </footer>
 
+<audio id="sfxBadumtss" preload="none" src="assets/audio/badumtss.mp3"></audio>
+<audio id="sfxAirhorn" preload="none" src="assets/audio/airhorn.mp3"></audio>
+
+<script src="js/data.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
