@@ -86,21 +86,43 @@ countBtn?.addEventListener('click', () => {
 // ---------- Gallery: pause background parallax not needed yet (phase 2) ----------
 
 // ---------- Video with center play button ----------
-const povVideo = document.getElementById('povVideo');
-const povPlayBtn = document.getElementById('povPlayBtn');
+function setupPlayButtonVideo(video, btn) {
+  if (!video || !btn) return;
+  btn.addEventListener('click', () => {
+    video.play();
+    btn.classList.add('is-hidden');
+  });
+  video.addEventListener('pause', () => btn.classList.remove('is-hidden'));
+  video.addEventListener('ended', () => btn.classList.remove('is-hidden'));
+}
 
-povPlayBtn?.addEventListener('click', () => {
-  povVideo.play();
-  povPlayBtn.classList.add('is-hidden');
-});
+setupPlayButtonVideo(document.getElementById('povVideo'), document.getElementById('povPlayBtn'));
+setupPlayButtonVideo(document.getElementById('rotatedVideo'), document.getElementById('rotatedPlayBtn'));
 
-povVideo?.addEventListener('pause', () => {
-  povPlayBtn.classList.remove('is-hidden');
-});
+// ---------- Rotated video: size it to cover its landscape frame after a -90deg turn ----------
+const rotatedVideo = document.getElementById('rotatedVideo');
+const rotatedWrap = document.getElementById('rotatedVideoWrap');
 
-povVideo?.addEventListener('ended', () => {
-  povPlayBtn.classList.remove('is-hidden');
-});
+function fitRotatedVideo() {
+  if (!rotatedVideo || !rotatedWrap) return;
+  const vw = rotatedVideo.videoWidth;
+  const vh = rotatedVideo.videoHeight;
+  if (!vw || !vh) return;
+
+  const cw = rotatedWrap.clientWidth;
+  const ch = rotatedWrap.clientHeight;
+  // After rotate(-90deg), the video's rendered box (rw x rh) occupies (rh x rw) on screen.
+  // Scale so that box covers the container: rh >= cw and rw >= ch.
+  const scale = Math.max(cw / vh, ch / vw);
+
+  rotatedVideo.style.width = `${vw * scale}px`;
+  rotatedVideo.style.height = `${vh * scale}px`;
+}
+
+if (rotatedVideo && rotatedWrap) {
+  rotatedVideo.addEventListener('loadedmetadata', fitRotatedVideo);
+  window.addEventListener('resize', fitRotatedVideo);
+}
 
 // ---------- Telegram-style voice message at 1.5x ----------
 const voiceAudio = document.getElementById('voiceAudio');
@@ -136,16 +158,32 @@ mediaEls.forEach((media) => {
 });
 
 // ---------- Personal greeting cards ----------
+function getInitials(name) {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+}
+
 const peopleList = document.getElementById('peopleList');
 if (peopleList && typeof GREETINGS !== 'undefined') {
   GREETINGS.forEach(({ name, avatar, message }) => {
     const card = document.createElement('div');
     card.className = 'people-card reveal';
+
+    const avatarHtml = avatar
+      ? `<img class="people-card__avatar" src="assets/img/people/${avatar}.jpg" alt="${name}" loading="lazy">`
+      : `<span class="people-card__avatar people-card__avatar--initials">${getInitials(name)}</span>`;
+
+    const messageHtml = message.replace(/\n/g, '<br>');
+
     card.innerHTML = `
-      <img class="people-card__avatar" src="assets/img/people/${avatar}.jpg" alt="${name}" loading="lazy">
+      ${avatarHtml}
       <div class="people-card__body">
         <p class="people-card__name">${name}</p>
-        <p class="people-card__message">${message}</p>
+        <p class="people-card__message">${messageHtml}</p>
       </div>
     `;
     peopleList.appendChild(card);

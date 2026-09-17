@@ -6,7 +6,7 @@
 <title>С Днём Рождения, Стас!</title>
 <meta name="description" content="Поздравление тренеру Стасу от команды Irbis Team">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Climate+Crisis&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -64,10 +64,11 @@
         <img src="assets/img/hero/veselyi-chelovek.jpg" alt="Крайне весёлый человек">
         <span class="reel-card__label">И крайне весёлый человек</span>
       </div>
-      <div class="reel-card reel-card--final" data-role="Это Стас!">
-        <!-- TODO: заменить на отдельное финальное фото Стаса -->
-        <img src="assets/img/hero/veselyi-chelovek.jpg" alt="Это Стас!">
-        <span class="reel-card__label reel-card__label--final">Это Стас!</span>
+      <div class="reel-card reel-card--final" data-role="Это Стас! (справа)">
+        <!-- TODO: заменить на присланное фото (двое парней, Стас справа) —
+             положи файл в assets/img/hero/eto-stas.jpg и поменяй src ниже -->
+        <img src="assets/img/hero/veselyi-chelovek.jpg" alt="Это Стас! (справа)">
+        <span class="reel-card__label reel-card__label--final">Это Стас! (справа)</span>
       </div>
     </div>
   </div>
@@ -122,12 +123,10 @@
       <audio id="voiceAudio" preload="none" src="assets/audio/neohota.ogg"></audio>
     </div>
 
-    <h3 class="section__subtitle reveal">Бонус: ещё немного контента</h3>
-    <div class="bonus-reel" id="bonusReel">
-      <video controls playsinline preload="none" src="assets/video/bonus-1.mov"></video>
-      <video controls playsinline preload="none" src="assets/video/bonus-2.mp4"></video>
-      <video controls playsinline preload="none" src="assets/video/bonus-3.mp4"></video>
-      <video controls playsinline preload="none" src="assets/video/bonus-song.mp4"></video>
+    <h2 class="section__title reveal">А так сможете?</h2>
+    <div class="video-embed video-embed--rotated reveal" id="rotatedVideoWrap">
+      <video id="rotatedVideo" playsinline preload="metadata" src="assets/video/tak-smozhete.mp4"></video>
+      <button class="video-embed__play" id="rotatedPlayBtn" aria-label="Воспроизвести видео">▶</button>
     </div>
   </section>
 

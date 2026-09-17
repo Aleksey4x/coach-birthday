@@ -1,15 +1,18 @@
 :root {
-  --track: #6e1420;
-  --track-dark: #4f0e17;
-  --line: #f4ece0;
+  --track: #5c1a22;
+  --track-dark: #3c1017;
+  --line: #afa597;
   --text: #fdf6ec;
-  --text-muted: #e8c9b8;
+  --text-muted: #d9c3b6;
   --accent: #ffb400;
   --accent-2: #ffe08a;
   --radius: 10px;
   --gap: 16px;
   --max-width: 720px;
-  --font-display: 'Caveat', cursive;
+  --font-display: 'Climate Crisis', sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --line-gap: 348px;
+  --line-width: 12px;
 }
 
 * { box-sizing: border-box; }
@@ -18,19 +21,27 @@ html { scroll-behavior: smooth; }
 
 body {
   margin: 0;
-  font-family: 'Manrope', system-ui, sans-serif;
+  font-family: var(--font-body);
   color: var(--text);
   line-height: 1.5;
   background-color: var(--track);
   background-image:
     repeating-linear-gradient(
-      115deg,
+      100deg,
       transparent 0,
-      transparent 130px,
-      var(--line) 130px,
-      var(--line) 136px
+      transparent var(--line-gap),
+      var(--line) var(--line-gap),
+      var(--line) calc(var(--line-gap) + var(--line-width))
     );
   background-attachment: fixed;
+}
+
+/* На узких экранах пропорционально уменьшаем шаг полос, иначе на мобильном видна максимум одна линия */
+@media (max-width: 640px) {
+  :root {
+    --line-gap: 140px;
+    --line-width: 8px;
+  }
 }
 
 img, video { max-width: 100%; display: block; }
@@ -51,8 +62,9 @@ a { color: inherit; }
   white-space: nowrap;
   width: max-content;
   animation: marquee 14s linear infinite;
-  font-weight: 800;
-  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.1rem;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--accent);
@@ -142,8 +154,9 @@ a { color: inherit; }
 }
 
 .reel-card__label {
-  font-weight: 800;
-  font-size: 1.15rem;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 1.3rem;
   background: var(--track-dark);
   border: 2px dashed var(--accent);
   color: var(--accent-2);
@@ -184,8 +197,10 @@ a { color: inherit; }
 }
 
 .section__title {
-  font-size: 1.6rem;
-  font-weight: 800;
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
   margin-bottom: 24px;
   text-align: center;
 }
@@ -322,6 +337,22 @@ a { color: inherit; }
 
 .video-embed__play.is-hidden { display: none; }
 
+.video-embed--rotated {
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+
+.video-embed--rotated video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  height: auto;
+  max-width: none;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  transform-origin: center center;
+}
+
 .tg-voice {
   display: flex;
   align-items: center;
@@ -392,21 +423,6 @@ a { color: inherit; }
   border-radius: 999px;
 }
 
-.bonus-reel {
-  display: flex;
-  gap: var(--gap);
-  overflow-x: auto;
-  padding-bottom: 8px;
-  scroll-snap-type: x proximity;
-}
-
-.bonus-reel video {
-  flex: 0 0 auto;
-  width: 220px;
-  border-radius: var(--radius);
-  scroll-snap-align: center;
-}
-
 /* ---------- People ---------- */
 .people-list {
   display: flex;
@@ -430,6 +446,16 @@ a { color: inherit; }
   object-fit: cover;
   flex: none;
   border: 2px solid var(--accent);
+}
+
+.people-card__avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--track-dark);
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 1rem;
 }
 
 .people-card__body { flex: 1; min-width: 0; }
