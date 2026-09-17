@@ -90,21 +90,27 @@
   <section class="section section--media" id="media">
     <h2 class="section__title reveal">Что говорит Стас...</h2>
 
-    <h3 class="section__subtitle reveal">когда недельный объём 120+ км?</h3>
-    <div class="video-embed reveal" id="povVideoWrap">
-      <video id="povVideo" playsinline preload="metadata" poster="" src="assets/video/pov.mp4"></video>
-      <button class="video-embed__play" id="povPlayBtn" aria-label="Воспроизвести видео">▶</button>
-    </div>
-
-    <h3 class="section__subtitle reveal">когда вам неохота идти на тренировку?</h3>
-    <div class="tg-voice reveal">
-      <button class="tg-voice__play" id="voicePlayBtn" aria-label="Воспроизвести голосовое">▶</button>
-      <div class="tg-voice__wave">
-        <span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span><span></span><span></span>
+    <div class="media-scroller" id="mediaScroller">
+      <div class="media-slide">
+        <h3 class="section__subtitle reveal">... когда недельный объём 120+ км?</h3>
+        <div class="video-embed reveal" id="povVideoWrap">
+          <video id="povVideo" playsinline preload="metadata" poster="" src="assets/video/pov.mp4"></video>
+          <button class="video-embed__play" id="povPlayBtn" aria-label="Воспроизвести видео">▶</button>
+        </div>
       </div>
-      <span class="tg-voice__speed">1.5x</span>
-      <audio id="voiceAudio" preload="none" src="assets/audio/neohota.mp3"></audio>
+
+      <div class="media-slide">
+        <h3 class="section__subtitle reveal">... когда вам неохота идти на тренировку?</h3>
+        <div class="tg-voice reveal">
+          <button class="tg-voice__play" id="voicePlayBtn" aria-label="Воспроизвести голосовое">▶</button>
+          <div class="tg-voice__wave">
+            <span></span><span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <span class="tg-voice__speed">1.5x</span>
+          <audio id="voiceAudio" preload="none" src="assets/audio/neohota.mp3"></audio>
+        </div>
+      </div>
     </div>
 
     <h2 class="section__title reveal">А так сможете?</h2>
@@ -147,7 +153,7 @@
 <button class="sound-check" id="soundCheckBtn">Проверить звук</button>
 <audio id="soundCheckAudio" preload="none" src="assets/audio/sound-check.mp3"></audio>
 
-<button class="sound-toggle" id="soundToggle" aria-pressed="false" aria-label="Включить музыку" hidden>🔈</button>
+<button class="sound-toggle" id="soundToggle" aria-pressed="false" aria-label="Включить музыку" hidden>🔇</button>
 
 <!-- Фоновая мелодия. Кнопка выше остаётся скрытой, пока файл не подгрузится,
      поэтому отсутствие трека не ломает страницу. -->

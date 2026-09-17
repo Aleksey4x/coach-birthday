@@ -372,6 +372,24 @@ a { color: inherit; }
 }
 
 /* ---------- Media section ---------- */
+/* Подзаголовок + плеер прокручиваются по одному: каждый слайд занимает всю ширину */
+.media-scroller {
+  display: flex;
+  min-height: 800px;
+  align-items: center;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.media-slide {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+}
+
+.media-scroller::-webkit-scrollbar { height: 6px; }
+.media-scroller::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
 .video-embed {
   position: relative;
   border: 10px solid var(--frame);

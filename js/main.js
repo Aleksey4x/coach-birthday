@@ -329,7 +329,7 @@ if (bgMusic && soundToggle) {
   const anyDuckerPlaying = () => duckers.some((el) => !el.paused && !el.ended);
 
   function setToggleState() {
-    soundToggle.textContent = musicOn ? '🔊' : '🔈';
+    soundToggle.textContent = musicOn ? '🔊' : '🔇';
     soundToggle.setAttribute('aria-pressed', String(musicOn));
     soundToggle.setAttribute('aria-label', musicOn ? 'Выключить музыку' : 'Включить музыку');
   }
