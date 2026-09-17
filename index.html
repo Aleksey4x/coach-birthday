@@ -49,15 +49,23 @@
 <main>
 
   <section class="section section--counter" id="counter">
-    <img class="counter__bg-photo" src="assets/img/misc/den-rozhdeniya.jpg" alt="" loading="lazy">
-    <div class="counter__content">
-      <h2 class="section__title reveal">15 сентября у Стаса</h2>
-      <h3 class="section__subtitle reveal">был день рождения</h3>
-      <p class="reveal section__text">Ему исполнилось</p>
-      <div class="counter__display reveal" id="ageCounter">?</div>
-      <p class="reveal section__text">лет!</p>
-      <p class="counter__status" id="counterStatus"></p>
-      <button class="btn reveal" id="countBtn">Посчитать</button>
+    <div class="counter-pin">
+      <div class="counter-pin__sticky">
+        <img class="counter__bg-photo" src="assets/img/misc/den-rozhdeniya.jpg" alt="" loading="lazy">
+
+        <div class="counter-pin__head">
+          <h2 class="section__title reveal">15 сентября у Стаса</h2>
+          <h3 class="section__subtitle reveal">был день рождения</h3>
+        </div>
+
+        <div class="counter__content">
+          <p class="section__text reveal">Ему исполнилось</p>
+          <div class="counter__display reveal" id="ageCounter">?</div>
+          <p class="section__text reveal">лет!</p>
+          <p class="counter__status" id="counterStatus"></p>
+          <button class="btn reveal" id="countBtn">Посчитать</button>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -88,31 +96,41 @@
   </section>
 
   <section class="section section--media" id="media">
-    <h2 class="section__title reveal">Что говорит Стас...</h2>
-
-    <div class="media-scroller" id="mediaScroller">
-      <div class="media-slide">
-        <h3 class="section__subtitle reveal">... когда недельный объём 120+ км?</h3>
-        <div class="video-embed reveal" id="povVideoWrap">
-          <video id="povVideo" playsinline preload="metadata" poster="" src="assets/video/pov.mp4"></video>
-          <button class="video-embed__play" id="povPlayBtn" aria-label="Воспроизвести видео">▶</button>
-        </div>
-      </div>
-
-      <div class="media-slide">
-        <h3 class="section__subtitle reveal">... когда вам неохота идти на тренировку?</h3>
-        <div class="tg-voice reveal">
-          <button class="tg-voice__play" id="voicePlayBtn" aria-label="Воспроизвести голосовое">▶</button>
-          <div class="tg-voice__wave">
-            <span></span><span></span><span></span><span></span><span></span>
-            <span></span><span></span><span></span><span></span><span></span>
+    <div class="media-pin" id="mediaPin">
+      <div class="media-pin__sticky">
+        <div class="media-pin__head">
+          <h2 class="section__title">Что говорит Стас...</h2>
+          <div class="media-pin__subtitles" id="mediaSubtitles">
+            <h3 class="section__subtitle" data-index="0">... когда недельный объём 120+ км?</h3>
+            <h3 class="section__subtitle" data-index="1">... когда вам неохота идти на тренировку?</h3>
           </div>
-          <span class="tg-voice__speed">1.5x</span>
-          <audio id="voiceAudio" preload="none" src="assets/audio/neohota.mp3"></audio>
+        </div>
+
+        <div class="media-pin__stage" id="mediaStage">
+          <div class="media-pin__item" data-index="0">
+            <div class="video-embed" id="povVideoWrap">
+              <video id="povVideo" playsinline preload="metadata" poster="" src="assets/video/pov.mp4"></video>
+              <button class="video-embed__play" id="povPlayBtn" aria-label="Воспроизвести видео">▶</button>
+            </div>
+          </div>
+
+          <div class="media-pin__item" data-index="1">
+            <div class="tg-voice">
+              <button class="tg-voice__play" id="voicePlayBtn" aria-label="Воспроизвести голосовое">▶</button>
+              <div class="tg-voice__wave">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <span class="tg-voice__speed">1.5x</span>
+              <audio id="voiceAudio" preload="none" src="assets/audio/neohota.mp3"></audio>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </section>
 
+  <section class="section section--tak" id="tak">
     <div class="tak-pin" id="takPin">
       <div class="tak-pin__sticky">
         <h2 class="section__title tak-pin__heading" id="takHeading">А так сможете?</h2>

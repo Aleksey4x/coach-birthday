@@ -206,6 +206,36 @@ if (galleryPin && galleryStage) {
   makeScrollProgress(galleryPin, updateGalleryStage);
 }
 
+// ---------- "Что говорит Стас": горизонтальная смена слайдов от прокрутки ----------
+const mediaPin = document.getElementById('mediaPin');
+const mediaStage = document.getElementById('mediaStage');
+const mediaSubtitles = document.getElementById('mediaSubtitles');
+
+if (mediaPin && mediaStage && mediaSubtitles) {
+  const items = Array.from(mediaStage.querySelectorAll('.media-pin__item'));
+  const subtitles = Array.from(mediaSubtitles.children);
+  const steps = items.length - 1;
+
+  // Задержка на первом и последнем слайде: блок успевает "прилипнуть"
+  // и дать себя рассмотреть до начала и после конца смены
+  const HOLD = 0.25;
+
+  function withHold(progress) {
+    return Math.min(Math.max((progress - HOLD) / (1 - HOLD * 2), 0), 1);
+  }
+
+  makeScrollProgress(mediaPin, (progress) => {
+    const position = withHold(progress) * steps;
+    const vw = window.innerWidth;
+
+    items.forEach((item, i) => {
+      const shift = (i - position) * vw;
+      item.style.transform = `translateX(${shift}px)`;
+      subtitles[i].style.transform = `translateX(${shift}px)`;
+    });
+  });
+}
+
 // ---------- Video with center play button + click/tap to pause ----------
 function setupPlayButtonVideo(video, btn) {
   if (!video || !btn) return;

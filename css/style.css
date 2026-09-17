@@ -216,14 +216,32 @@ a { color: inherit; }
   margin: 0 0 8px;
 }
 
-/* ---------- Counter section ---------- */
+/* ---------- Counter section (закреплённый слайд) ---------- */
+/* overflow здесь быть не должно: у предка sticky-элемента он ломает залипание */
 .section--counter {
   max-width: none;
+  padding: 0;
   text-align: center;
+}
+
+.counter-pin {
+  position: relative;
+  height: 160vh; /* экран на просмотр + запас на уход слайда */
+}
+
+.counter-pin__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
   overflow: hidden;
-  min-height: 100svh;
-  display: flex;
-  align-items: center;
+}
+
+.counter-pin__head {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  right: 20px;
+  z-index: 3;
 }
 
 /* Всегда заполняет блок целиком: cover зумит фото под ширину и обрезает
@@ -238,27 +256,22 @@ a { color: inherit; }
   filter: saturate(0.6) contrast(1.1);
 }
 
+/* Контент по центру слайда, как фотографии в блоке команды */
 .counter__content {
-  position: relative;
-  width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 8px;
 }
 
-/* Растягиваем на всю ширину, иначе text-align: left не виден
-   из-за align-items: center у контейнера */
-.counter__content .section__title,
-.counter__content .section__subtitle {
-  align-self: stretch;
-}
-
 /* Подзаголовок прижат к заголовку (в остальных блоках отступ остаётся прежним) */
-.counter__content .section__title { margin-bottom: 4px; }
-.counter__content .section__subtitle { margin-top: 0; }
+.counter-pin__head .section__title { margin-bottom: 4px; }
+.counter-pin__head .section__subtitle { margin: 0; }
 
 .counter__display {
   font-family: var(--font-body);
@@ -371,24 +384,60 @@ a { color: inherit; }
   opacity: 0.9;
 }
 
-/* ---------- Media section ---------- */
-/* Подзаголовок + плеер прокручиваются по одному: каждый слайд занимает всю ширину */
-.media-scroller {
-  display: flex;
-  min-height: 800px;
-  align-items: center;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
+/* ---------- Media section (закреплённый слайд с горизонтальной сменой) ---------- */
+.section--media,
+.section--tak {
+  max-width: none;
+  padding: 0;
 }
 
-.media-slide {
-  flex: 0 0 100%;
-  scroll-snap-align: center;
+.media-pin {
+  position: relative;
+  height: 220vh; /* задержка на просмотр + прогон смены + задержка на втором слайде */
 }
 
-.media-scroller::-webkit-scrollbar { height: 6px; }
-.media-scroller::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+.media-pin__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.media-pin__head {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  right: 20px;
+  z-index: 3;
+}
+
+.media-pin__head .section__title { margin-bottom: 8px; }
+
+/* Все подзаголовки лежат в одной ячейке грида: контейнер получает высоту по
+   самому высокому, а вертикальная позиция сама следует за высотой заголовка */
+.media-pin__subtitles { display: grid; }
+
+.media-pin__subtitles > * {
+  grid-area: 1 / 1;
+  margin: 0;
+  will-change: transform;
+}
+
+/* Медиа строго по центру слайда, поверх него — заголовок */
+.media-pin__stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 20px;
+}
+
+.media-pin__item {
+  grid-area: 1 / 1;
+  width: 100%;
+  max-width: var(--max-width);
+  will-change: transform;
+}
 
 .video-embed {
   position: relative;
@@ -441,8 +490,8 @@ a { color: inherit; }
 .tak-pin__heading {
   position: absolute;
   top: 24px;
-  left: 0;
-  right: 0;
+  left: 20px;
+  right: 20px;
   z-index: 3;
   margin: 0;
   will-change: transform;
@@ -451,8 +500,8 @@ a { color: inherit; }
 .tak-pin__video {
   position: absolute;
   top: 50%;
-  left: 0;
-  right: 0;
+  left: 20px;
+  right: 20px;
   margin: 0 auto;
   max-width: var(--max-width);
   will-change: transform;
