@@ -221,12 +221,17 @@ a { color: inherit; }
   max-width: none;
   text-align: center;
   overflow: hidden;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
 }
 
+/* Фото шире блока, чтобы кадр был крупнее: 15% уходит за левый край, 10% за правый */
 .counter__bg-photo {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: -15%;
+  width: 125%;
   height: 100%;
   object-fit: cover;
   opacity: 0.18;
@@ -235,12 +240,20 @@ a { color: inherit; }
 
 .counter__content {
   position: relative;
+  width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+}
+
+/* Растягиваем на всю ширину, иначе text-align: left не виден
+   из-за align-items: center у контейнера */
+.counter__content .section__title,
+.counter__content .section__subtitle {
+  align-self: stretch;
 }
 
 .counter__display {
@@ -624,8 +637,8 @@ a { color: inherit; }
 /* ---------- Sound toggle ---------- */
 .sound-toggle {
   position: fixed;
-  right: 16px;
-  bottom: 16px;
+  right: 20px;
+  bottom: 20px;
   z-index: 100;
   width: 48px;
   height: 48px;
