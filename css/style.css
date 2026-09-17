@@ -102,7 +102,7 @@ a { color: inherit; }
   width: 72px;
   height: auto;
   object-fit: contain;
-  align-self: center;
+  align-self: flex-start;
 }
 
 .hero__stage {
@@ -598,6 +598,25 @@ a { color: inherit; }
 .final-photo--les {
   z-index: 1;
   opacity: 0;
+}
+
+/* ---------- Sound check ---------- */
+/* top отступает от бегущей строки, чтобы кнопка её не перекрывала */
+.sound-check {
+  position: fixed;
+  top: 52px;
+  right: 16px;
+  z-index: 100;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--accent);
+  background: var(--track-dark);
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.45);
 }
 
 /* ---------- Sound toggle ---------- */

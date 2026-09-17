@@ -270,6 +270,15 @@ voiceAudio?.addEventListener('ended', () => {
   tgVoice.classList.remove('is-playing');
 });
 
+// ---------- Sound check ----------
+const soundCheckBtn = document.getElementById('soundCheckBtn');
+const soundCheckAudio = document.getElementById('soundCheckAudio');
+
+soundCheckBtn?.addEventListener('click', () => {
+  soundCheckAudio.currentTime = 0;
+  soundCheckAudio.play().catch(() => {});
+});
+
 // ---------- Background music with ducking ----------
 const bgMusic = document.getElementById('bgMusic');
 const soundToggle = document.getElementById('soundToggle');
