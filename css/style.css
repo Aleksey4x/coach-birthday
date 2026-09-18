@@ -327,7 +327,8 @@ a { color: inherit; }
 
 .gallery-pin {
   position: relative;
-  height: 560vh; /* runway for 10 photos, tune if photo count changes */
+  /* 100vh залипания + по 46vh на кадр; при смене количества фото пересчитать */
+  height: 652vh;
 }
 
 .gallery-pin__sticky {

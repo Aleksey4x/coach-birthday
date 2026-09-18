@@ -123,4 +123,9 @@ const GREETINGS = [
     avatar: "evgeniy-karkavin",
     message: "Стас, с днём рождения! Желаю, чтобы каждый новый год жизни прибавлял мудрости, но сохранял молодость души 😽",
   },
+  {
+    name: "Наталья Ларионова",
+    avatar: "natalya-larionova",
+    voice: "assets/audio/people/natalya-larionova.mp3",
+  },
 ];
