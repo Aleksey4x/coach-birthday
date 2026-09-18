@@ -8,7 +8,7 @@ const HERO_SEQUENCE = [
   { role: "Альпинист", img: "assets/img/hero/alpinist.png" },
   { role: "Отец", img: "assets/img/hero/otec.png" },
   { role: "Турист", img: "assets/img/hero/puteshestvennik.png" },
-  { role: "И крайне весёлый человек", img: "assets/img/hero/veselyi-chelovek.jpg" },
+  { role: "Весельчак", img: "assets/img/hero/veselyi-chelovek.jpg" },
 ];
 
 const HERO_FINAL = {
