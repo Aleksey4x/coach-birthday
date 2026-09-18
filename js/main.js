@@ -38,6 +38,35 @@ function makeScrollProgress(wrapperEl, onProgress) {
   update();
 }
 
+// ---------- Параллакс фона ----------
+// Слой выше экрана, поэтому за полную прокрутку страницы он проезжает
+// только разницу своей высоты и экрана — отсюда и эффект отставания.
+const pageBg = document.getElementById('pageBg');
+
+if (pageBg) {
+  let bgTicking = false;
+
+  function updatePageBg() {
+    bgTicking = false;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    if (maxScroll <= 0) return;
+
+    const travel = pageBg.offsetHeight - window.innerHeight;
+    const progress = Math.min(Math.max(window.scrollY / maxScroll, 0), 1);
+    pageBg.style.transform = `translate3d(0, ${-progress * travel}px, 0)`;
+  }
+
+  function onBgScroll() {
+    if (bgTicking) return;
+    bgTicking = true;
+    requestAnimationFrame(updatePageBg);
+  }
+
+  window.addEventListener('scroll', onBgScroll, { passive: true });
+  window.addEventListener('resize', onBgScroll);
+  updatePageBg();
+}
+
 // ---------- Hero: scroll-driven "Он — {роль}" sequence ----------
 const heroPin = document.getElementById('heroPin');
 const heroPhotos = document.getElementById('heroPhotos');

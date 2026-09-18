@@ -1,7 +1,8 @@
 :root {
-  --track: #5c1a22;
+  --track: #712e2f; /* совпадает с подложкой в background.svg */
   --track-dark: #3c1017;
   --line: #afa597;
+  --bg-height: 5385px; /* натуральная высота background.svg */
   --frame: #f4ece0;
   --text: #fdf6ec;
   --text-muted: #d9c3b6;
@@ -12,8 +13,6 @@
   --max-width: 720px;
   --font-display: 'Climate Crisis', sans-serif;
   --font-body: 'Inter', system-ui, sans-serif;
-  --line-gap: 348px;
-  --line-width: 12px;
 }
 
 * { box-sizing: border-box; }
@@ -26,24 +25,24 @@ body {
   color: var(--text);
   line-height: 1.5;
   background-color: var(--track);
-  background-image:
-    repeating-linear-gradient(
-      100deg,
-      transparent 0,
-      transparent calc(var(--line-gap) - 1px),
-      var(--line) var(--line-gap),
-      var(--line) calc(var(--line-gap) + var(--line-width)),
-      transparent calc(var(--line-gap) + var(--line-width) + 1px)
-    );
-  background-attachment: fixed;
 }
 
-/* На узких экранах пропорционально уменьшаем шаг полос, иначе на мобильном видна максимум одна линия */
-@media (max-width: 640px) {
-  :root {
-    --line-gap: 140px;
-    --line-width: 8px;
-  }
+/* Фон-подложка: дорожки стадиона с виражами, едут параллаксом.
+   Высота задана жёстко на всех экранах, ширина картинки (1920) при этом
+   обрезается по краям — для абстрактных линий это незаметно.
+   Смещение по скроллу задаёт JS. */
+.page-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--bg-height);
+  z-index: -1;
+  background-image: url('../assets/img/misc/background.svg');
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: auto 100%;
+  will-change: transform;
 }
 
 img, video { max-width: 100%; display: block; }
