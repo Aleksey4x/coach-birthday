@@ -134,9 +134,11 @@
     <div class="tak-pin" id="takPin">
       <div class="tak-pin__sticky">
         <h2 class="section__title tak-pin__heading" id="takHeading">А так сможете?</h2>
-        <div class="video-embed video-embed--rotated tak-pin__video" id="rotatedVideoWrap">
-          <video id="rotatedVideo" playsinline preload="metadata" src="assets/video/tak-smozhete.mp4"></video>
-          <button class="video-embed__play" id="rotatedPlayBtn" aria-label="Воспроизвести видео">▶</button>
+        <div class="tak-pin__video" id="takVideoWrap">
+          <div class="video-embed video-embed--rotated" id="rotatedVideoWrap">
+            <video id="rotatedVideo" playsinline preload="metadata" src="assets/video/tak-smozhete.mp4"></video>
+            <button class="video-embed__play" id="rotatedPlayBtn" aria-label="Воспроизвести видео">▶</button>
+          </div>
         </div>
       </div>
     </div>
@@ -161,16 +163,16 @@
             <img src="assets/img/final/les.jpg" alt="ЛЕС">
           </div>
         </div>
+
+        <div class="final-caption" id="finalCaption">
+          <img class="final-caption__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
+          <p>С любовью, твоя команда Irbis Team ❤️</p>
+        </div>
       </div>
     </div>
   </section>
 
 </main>
-
-<footer class="footer">
-  <img class="footer__logo" src="assets/logo/logo-white.png" alt="Irbis Team">
-  <p>С любовью, твоя команда Irbis Team ❤️</p>
-</footer>
 
 <button class="sound-check" id="soundCheckBtn">Проверить звук</button>
 <audio id="soundCheckAudio" preload="none" src="assets/audio/sound-check.mp3"></audio>

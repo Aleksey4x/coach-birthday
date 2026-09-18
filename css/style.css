@@ -497,14 +497,22 @@ a { color: inherit; }
   will-change: transform;
 }
 
+/* Центрируем видео флексом с отступами по бокам, а не парой left/right
+   с авто-полями: у абсолютного блока с max-width это давало прижатие влево */
 .tak-pin__video {
   position: absolute;
   top: 50%;
-  left: 20px;
-  right: 20px;
-  margin: 0 auto;
-  max-width: var(--max-width);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 20px;
   will-change: transform;
+}
+
+.tak-pin__video .video-embed {
+  width: 100%;
+  max-width: var(--max-width);
 }
 
 .video-embed--rotated {
@@ -654,23 +662,22 @@ a { color: inherit; }
 
 .final-pin {
   position: relative;
-  height: 170vh; /* runway for the single ТОП -> ЛЕС swap */
+  height: 260vh; /* три такта: показ, смена фото, появление подписи */
 }
 
 .final-pin__sticky {
   position: sticky;
   top: 0;
   height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 24px 20px;
-  gap: 32px;
   overflow: hidden;
 }
 
 .final-heading {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  right: 20px;
+  z-index: 3;
   font-family: var(--font-display);
   font-weight: 400;
   font-size: clamp(1.8rem, 8vw, 2.6rem);
@@ -691,9 +698,8 @@ a { color: inherit; }
 }
 
 .final-stage {
-  position: relative;
-  width: 100%;
-  height: 340px;
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -708,9 +714,11 @@ a { color: inherit; }
   will-change: transform, opacity;
 }
 
+/* Увеличены в 1.5 раза (было 220x280); max-width спасает только очень узкие экраны */
 .final-photo img {
-  width: 220px;
-  height: 280px;
+  width: 330px;
+  height: 420px;
+  max-width: calc(100vw - 60px);
   object-fit: cover;
 }
 
@@ -719,6 +727,27 @@ a { color: inherit; }
 .final-photo--les {
   z-index: 1;
   opacity: 0;
+}
+
+/* Появляется последним тактом блока */
+.final-caption {
+  position: absolute;
+  bottom: 28px;
+  left: 20px;
+  right: 20px;
+  z-index: 3;
+  text-align: center;
+  color: var(--text-muted);
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.final-caption p { margin: 0; }
+
+.final-caption__logo {
+  width: 56px;
+  margin: 0 auto 10px;
+  opacity: 0.8;
 }
 
 /* ---------- Sound check ---------- */
@@ -762,19 +791,6 @@ a { color: inherit; }
 }
 
 .sound-toggle[hidden] { display: none; }
-
-/* ---------- Footer ---------- */
-.footer {
-  text-align: center;
-  padding: 40px 20px 64px;
-  color: var(--text-muted);
-}
-
-.footer__logo {
-  width: 56px;
-  margin: 0 auto 12px;
-  opacity: 0.8;
-}
 
 /* ---------- Scroll reveal ---------- */
 .reveal {

@@ -281,8 +281,9 @@ if (rotatedVideo && rotatedWrap) {
 // ---------- "А так сможете?": видео фиксируется в центре, заголовок догоняет ----------
 const takPin = document.getElementById('takPin');
 const takHeading = document.getElementById('takHeading');
+const takVideoWrap = document.getElementById('takVideoWrap');
 
-if (takPin && takHeading && rotatedWrap) {
+if (takPin && takHeading && takVideoWrap) {
   // Доли прогона, за которые каждый элемент доезжает до своего места.
   // Видео проходит больший путь за меньшую долю прокрутки — то есть поднимается
   // заметно быстрее, а заголовок отстаёт и как бы тянется за ним.
@@ -296,7 +297,7 @@ if (takPin && takHeading && rotatedWrap) {
   makeScrollProgress(takPin, (progress) => {
     const vh = window.innerHeight;
     // Замеры делаем до записи стилей, чтобы не провоцировать лишний пересчёт лейаута
-    const videoHeight = rotatedWrap.offsetHeight;
+    const videoHeight = takVideoWrap.offsetHeight;
     const headingHeight = takHeading.offsetHeight;
 
     const videoProgress = Math.min(progress / VIDEO_ARRIVES_AT, 1);
@@ -314,7 +315,7 @@ if (takPin && takHeading && rotatedWrap) {
     );
     const headingShift = Math.min((1 - headingProgress) * vh * HEADING_START_SHIFT, maxHeadingShift);
 
-    rotatedWrap.style.transform = `translateY(calc(-50% + ${videoShift}px))`;
+    takVideoWrap.style.transform = `translateY(calc(-50% + ${videoShift}px))`;
     takHeading.style.transform = `translateY(${headingShift}px)`;
   });
 }
@@ -484,18 +485,27 @@ const finalPin = document.getElementById('finalPin');
 const finalTop = document.getElementById('finalTop');
 const finalLes = document.getElementById('finalLes');
 const finalLesWord = document.getElementById('finalLesWord');
+const finalCaption = document.getElementById('finalCaption');
 
-if (finalPin && finalTop && finalLes && finalLesWord) {
-  function updateFinal(progress) {
-    finalTop.style.opacity = String(1 - progress);
-    finalTop.style.transform = `rotate(${-2 + progress * 12}deg) translate(${progress * 70}px, ${progress * -50}px) scale(${1 - progress * 0.15})`;
+if (finalPin && finalTop && finalLes && finalLesWord && finalCaption) {
+  // Три такта: показ первого фото -> смена фото -> появление подписи.
+  // Заголовок при этом не двигается.
+  const phase = (progress, from, to) => Math.min(Math.max((progress - from) / (to - from), 0), 1);
 
-    finalLes.style.opacity = String(progress);
-    finalLes.style.transform = `rotate(${4 - progress * 1}deg) translate(${(1 - progress) * 40}px, ${(1 - progress) * 20}px) scale(${0.9 + progress * 0.1})`;
+  makeScrollProgress(finalPin, (progress) => {
+    const swap = phase(progress, 0.3, 0.65);
+    const caption = phase(progress, 0.78, 0.95);
 
-    finalLesWord.style.opacity = String(progress);
-    finalLesWord.style.transform = `translateX(${(1 - progress) * -16}px)`;
-  }
+    finalTop.style.opacity = String(1 - swap);
+    finalTop.style.transform = `rotate(${-2 + swap * 12}deg) translate(${swap * 70}px, ${swap * -50}px) scale(${1 - swap * 0.15})`;
 
-  makeScrollProgress(finalPin, updateFinal);
+    finalLes.style.opacity = String(swap);
+    finalLes.style.transform = `rotate(${4 - swap}deg) translate(${(1 - swap) * 40}px, ${(1 - swap) * 20}px) scale(${0.9 + swap * 0.1})`;
+
+    finalLesWord.style.opacity = String(swap);
+    finalLesWord.style.transform = `translateX(${(1 - swap) * -16}px)`;
+
+    finalCaption.style.opacity = String(caption);
+    finalCaption.style.transform = `translateY(${(1 - caption) * 24}px)`;
+  });
 }
