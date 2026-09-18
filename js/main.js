@@ -130,6 +130,7 @@ const ageCounterEl = document.getElementById('ageCounter');
 const counterStatus = document.getElementById('counterStatus');
 const countBtn = document.getElementById('countBtn');
 const sfxBadumtss = document.getElementById('sfxBadumtss');
+const sfxBruh = document.getElementById('sfxBruh');
 const sfxAirhorn = document.getElementById('sfxAirhorn');
 
 function playSfx(el) {
@@ -167,11 +168,14 @@ async function runAgeCounter() {
   const pauseHoldMs = 3000;
   const spinDurations = [5000, 3000, 2000];
 
+  // Своя отбивка на каждую остановку
+  const pauseSounds = [sfxBadumtss, sfxBruh];
+
   for (let i = 0; i < spinDurations.length; i += 1) {
     await spinDigitsFor(spinDurations[i]);
     if (i < spinDurations.length - 1) {
       ageCounterEl.textContent = String(randomFakeAge());
-      playSfx(sfxBadumtss);
+      playSfx(pauseSounds[i]);
       await wait(pauseHoldMs);
     }
   }
@@ -514,7 +518,8 @@ if (bgMusic && soundToggle) {
   const FADE_IN_MS = 900;
 
   // Короткие эффекты счётчика играют поверх музыки и не приглушают её
-  const duckers = mediaEls.filter((el) => el !== sfxBadumtss && el !== sfxAirhorn);
+  const sfxEls = [sfxBadumtss, sfxBruh, sfxAirhorn];
+  const duckers = mediaEls.filter((el) => !sfxEls.includes(el));
 
   let musicOn = false;
   let fadeRaf = null;
