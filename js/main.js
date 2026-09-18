@@ -245,16 +245,28 @@ if (mediaPin && mediaStage && mediaSubtitles) {
   const subtitles = Array.from(mediaSubtitles.children);
   const steps = items.length - 1;
 
-  // Задержка на первом и последнем слайде: блок успевает "прилипнуть"
-  // и дать себя рассмотреть до начала и после конца смены
-  const HOLD = 0.25;
+  // Каждый слайд задерживается по центру, между задержками идёт прогон.
+  // Вес задержки к весу прогона — 1:2; из суммы весов посчитана высота
+  // обёртки в CSS, так что при добавлении слайда её нужно пересчитать.
+  const HOLD_WEIGHT = 1;
+  const MOVE_WEIGHT = 2;
 
-  function withHold(progress) {
-    return Math.min(Math.max((progress - HOLD) / (1 - HOLD * 2), 0), 1);
+  function positionFromProgress(progress) {
+    const total = items.length * HOLD_WEIGHT + steps * MOVE_WEIGHT;
+    let left = progress * total;
+
+    for (let i = 0; i < items.length; i += 1) {
+      if (left <= HOLD_WEIGHT || i === steps) return i;
+      left -= HOLD_WEIGHT;
+      if (left <= MOVE_WEIGHT) return i + left / MOVE_WEIGHT;
+      left -= MOVE_WEIGHT;
+    }
+
+    return steps;
   }
 
   makeScrollProgress(mediaPin, (progress) => {
-    const position = withHold(progress) * steps;
+    const position = positionFromProgress(progress);
     // Ширина сцены, а не экрана: страница ограничена колонкой, и слайд должен
     // уходить ровно за её край, иначе в середине перехода была бы пустая пауза
     const stageWidth = mediaStage.clientWidth;
@@ -351,27 +363,35 @@ if (takPin && takHeading && takVideoWrap) {
   });
 }
 
-// ---------- Telegram-style voice message at 1.5x ----------
-const voiceAudio = document.getElementById('voiceAudio');
-const voicePlayBtn = document.getElementById('voicePlayBtn');
-const tgVoice = document.querySelector('.tg-voice');
+// ---------- Telegram-style voice messages ----------
+// Скорость берётся из data-rate, по умолчанию обычная
+document.querySelectorAll('.tg-voice').forEach((bubble) => {
+  const audio = bubble.querySelector('audio');
+  const btn = bubble.querySelector('.tg-voice__play');
+  if (!audio || !btn) return;
 
-voicePlayBtn?.addEventListener('click', () => {
-  if (voiceAudio.paused) {
-    voiceAudio.playbackRate = 1.5;
-    voiceAudio.play();
-    voicePlayBtn.textContent = '❚❚';
-    tgVoice.classList.add('is-playing');
-  } else {
-    voiceAudio.pause();
-    voicePlayBtn.textContent = '▶';
-    tgVoice.classList.remove('is-playing');
+  const rate = parseFloat(bubble.dataset.rate || '1');
+
+  function showStopped() {
+    btn.textContent = '▶';
+    bubble.classList.remove('is-playing');
   }
-});
 
-voiceAudio?.addEventListener('ended', () => {
-  voicePlayBtn.textContent = '▶';
-  tgVoice.classList.remove('is-playing');
+  btn.addEventListener('click', () => {
+    if (audio.paused) {
+      audio.playbackRate = rate;
+      audio.play();
+      btn.textContent = '❚❚';
+      bubble.classList.add('is-playing');
+    } else {
+      audio.pause();
+    }
+  });
+
+  // pause, а не только ended: плеер может остановить и взаимная остановка,
+  // когда запускают другое аудио или видео на странице
+  audio.addEventListener('pause', showStopped);
+  audio.addEventListener('ended', showStopped);
 });
 
 // ---------- Sound check ----------

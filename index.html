@@ -107,6 +107,7 @@
           <div class="media-pin__subtitles" id="mediaSubtitles">
             <h3 class="section__subtitle" data-index="0">... когда недельный объём 120+ км?</h3>
             <h3 class="section__subtitle" data-index="1">... когда вам неохота идти на тренировку?</h3>
+            <h3 class="section__subtitle" data-index="2">... если спросить «можно ли пропустить тренировку»?</h3>
           </div>
         </div>
 
@@ -119,14 +120,25 @@
           </div>
 
           <div class="media-pin__item" data-index="1">
-            <div class="tg-voice">
-              <button class="tg-voice__play" id="voicePlayBtn" aria-label="Воспроизвести голосовое">▶</button>
+            <div class="tg-voice" data-rate="1.5">
+              <button class="tg-voice__play" aria-label="Воспроизвести голосовое">▶</button>
               <div class="tg-voice__wave">
                 <span></span><span></span><span></span><span></span><span></span>
                 <span></span><span></span><span></span><span></span><span></span>
               </div>
               <span class="tg-voice__speed">1.5x</span>
               <audio id="voiceAudio" preload="none" src="assets/audio/neohota.mp3"></audio>
+            </div>
+          </div>
+
+          <div class="media-pin__item" data-index="2">
+            <div class="tg-voice">
+              <button class="tg-voice__play" aria-label="Воспроизвести голосовое">▶</button>
+              <div class="tg-voice__wave">
+                <span></span><span></span><span></span><span></span><span></span>
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+              <audio id="hapniAudio" preload="none" src="assets/audio/hapni.mp3"></audio>
             </div>
           </div>
         </div>
