@@ -4,6 +4,8 @@
   --line: #afa597;
   --bg-height: 5385px; /* натуральная высота background.svg */
   --page-width: 800px;
+  /* Общая тень для крупных заголовков поверх фото и фона */
+  --heading-shadow: 0 2px 16px rgba(0, 0, 0, 0.35), 0 1px 4px rgba(0, 0, 0, 0.3);
   --backdrop: #2a1113; /* поля по бокам: та же гамма, но заметно темнее фона страницы */
   --frame: #f4ece0;
   --text: #fdf6ec;
@@ -182,7 +184,7 @@ a { color: inherit; }
   font-weight: 400;
   line-height: 1.15;
   padding: 16px;
-  text-shadow: 0 2px 16px rgba(0,0,0,0.75), 0 1px 4px rgba(0,0,0,0.6);
+  text-shadow: var(--heading-shadow);
 }
 
 .hero__headline.is-final {
@@ -761,6 +763,7 @@ a { color: inherit; }
   font-size: clamp(1.8rem, 8vw, 2.6rem);
   margin: 0;
   text-align: left;
+  text-shadow: var(--heading-shadow);
 }
 
 .final-heading__toples {
