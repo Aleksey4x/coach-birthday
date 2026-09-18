@@ -38,6 +38,32 @@ function makeScrollProgress(wrapperEl, onProgress) {
   update();
 }
 
+// ---------- Позиция с задержками ----------
+// Раскладывает прогресс 0..1 в дробную позицию 0..count-1 так, что каждый
+// элемент задерживается в центре, а между задержками идёт прогон.
+// Вес задержки к весу прогона — 1:2; из суммы весов считается высота обёртки
+// в CSS, поэтому при изменении количества элементов её нужно пересчитать.
+const HOLD_WEIGHT = 1;
+const MOVE_WEIGHT = 2;
+
+function makeHoldSteps(count) {
+  const steps = count - 1;
+  const total = count * HOLD_WEIGHT + steps * MOVE_WEIGHT;
+
+  return function positionAt(progress) {
+    let left = progress * total;
+
+    for (let i = 0; i < count; i += 1) {
+      if (left <= HOLD_WEIGHT || i === steps) return i;
+      left -= HOLD_WEIGHT;
+      if (left <= MOVE_WEIGHT) return i + left / MOVE_WEIGHT;
+      left -= MOVE_WEIGHT;
+    }
+
+    return steps;
+  };
+}
+
 // ---------- Параллакс фона ----------
 // Слой выше экрана, поэтому за полную прокрутку страницы он проезжает
 // только разницу своей высоты и экрана — отсюда и эффект отставания.
@@ -104,8 +130,12 @@ if (heroPin && heroPhotos && heroHeadline && heroRoleLine && typeof HERO_SEQUENC
   const ARC_LIFT = 75; // подъём к моменту вылета
   const ARC_BULGE = 30; // прогиб дуги, за счёт него траектория не прямая
 
+  // Каждый кадр задерживается в центре, иначе лента пролистывается слишком
+  // быстро и подпись не успеваешь прочитать
+  const heroPosition = makeHoldSteps(totalSteps);
+
   function updateHero(progress01) {
-    const progress = progress01 * (totalSteps - 1);
+    const progress = heroPosition(progress01);
     renderHeroStep(Math.round(progress));
 
     photos.forEach((el, i) => {
@@ -249,25 +279,7 @@ if (mediaPin && mediaStage && mediaSubtitles) {
   const subtitles = Array.from(mediaSubtitles.children);
   const steps = items.length - 1;
 
-  // Каждый слайд задерживается по центру, между задержками идёт прогон.
-  // Вес задержки к весу прогона — 1:2; из суммы весов посчитана высота
-  // обёртки в CSS, так что при добавлении слайда её нужно пересчитать.
-  const HOLD_WEIGHT = 1;
-  const MOVE_WEIGHT = 2;
-
-  function positionFromProgress(progress) {
-    const total = items.length * HOLD_WEIGHT + steps * MOVE_WEIGHT;
-    let left = progress * total;
-
-    for (let i = 0; i < items.length; i += 1) {
-      if (left <= HOLD_WEIGHT || i === steps) return i;
-      left -= HOLD_WEIGHT;
-      if (left <= MOVE_WEIGHT) return i + left / MOVE_WEIGHT;
-      left -= MOVE_WEIGHT;
-    }
-
-    return steps;
-  }
+  const positionFromProgress = makeHoldSteps(items.length);
 
   makeScrollProgress(mediaPin, (progress) => {
     const position = positionFromProgress(progress);

@@ -94,7 +94,9 @@ a { color: inherit; }
 /* ---------- Hero (scroll-pinned role/photo sequence) ---------- */
 .hero-pin {
   position: relative;
-  height: 460vh; /* runway for 9 steps (8 roles + final), tune if steps change */
+  /* 100vh залипания + 20vh на единицу веса из JS.
+     9 кадров: 9 задержек по 1 + 8 прогонов по 2 = 25 единиц = 500vh */
+  height: 600vh;
 }
 
 .hero-pin__sticky {
