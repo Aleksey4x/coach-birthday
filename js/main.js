@@ -363,6 +363,95 @@ if (takPin && takHeading && takVideoWrap) {
   });
 }
 
+// ---------- Personal greeting cards (Telegram-style bubbles) ----------
+// Рендерится до обработчиков плееров и до сбора медиа со страницы, иначе
+// голосовые в карточках остались бы без кнопки, без взаимной остановки
+// и не приглушали бы фоновую музыку.
+function getInitials(name) {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+}
+
+// Высоты полосок повторяются по кругу — получается рисунок, похожий на речь.
+// Задаём их здесь, потому что в стилях задержки прописаны лишь для первых десяти.
+const WAVE_PATTERN = [40, 66, 30, 82, 52, 95, 44, 70, 34, 60, 88, 38, 56, 76, 28];
+
+function voiceBubbleHtml(src) {
+  const bars = Array.from({ length: 30 }, (_, i) => {
+    const height = WAVE_PATTERN[i % WAVE_PATTERN.length];
+    const delay = ((i % 10) * 0.07).toFixed(2);
+    return `<span style="--h:${height}%;--d:${delay}s"></span>`;
+  }).join('');
+  return `
+    <div class="people-card__bubble people-card__bubble--voice">
+      <div class="tg-voice tg-voice--light">
+        <button class="tg-voice__play" aria-label="Воспроизвести голосовое">▶</button>
+        <div class="tg-voice__wave">${bars}</div>
+        <span class="tg-voice__time">--:--</span>
+        <audio preload="metadata" src="${src}"></audio>
+      </div>
+    </div>
+  `;
+}
+
+const peopleList = document.getElementById('peopleList');
+if (peopleList && typeof GREETINGS !== 'undefined') {
+  GREETINGS.forEach(({ name, avatar, message, voice }) => {
+    const card = document.createElement('div');
+    // Аватарка одна на карточку; когда сообщений два, она встаёт у нижнего, текстового
+    card.className = `people-card reveal${voice && message ? ' people-card--stacked' : ''}`;
+
+    const avatarHtml = avatar
+      ? `<img class="people-card__avatar" src="assets/img/people/${avatar}.jpg" alt="${name}" loading="lazy">`
+      : `<span class="people-card__avatar people-card__avatar--initials">${getInitials(name)}</span>`;
+
+    const textHtml = message
+      ? `
+      <div class="people-card__bubble">
+        <p class="people-card__name">${name}</p>
+        <p class="people-card__message">${message.replace(/\n/g, '<br>')}</p>
+      </div>
+    `
+      : '';
+
+    // У голосового без текста имя показываем над самим голосовым
+    const voiceHtml = voice
+      ? `${message ? '' : `<p class="people-card__name people-card__name--solo">${name}</p>`}${voiceBubbleHtml(voice)}`
+      : '';
+
+    card.innerHTML = `
+      ${avatarHtml}
+      <div class="people-card__stack">
+        ${voiceHtml}
+        ${textHtml}
+      </div>
+    `;
+    peopleList.appendChild(card);
+    revealObserver.observe(card);
+  });
+}
+
+// Длительность голосовых подставляем из метаданных
+document.querySelectorAll('.tg-voice__time').forEach((label) => {
+  const audio = label.parentElement.querySelector('audio');
+  if (!audio) return;
+
+  function showDuration() {
+    if (!Number.isFinite(audio.duration)) return;
+    const total = Math.round(audio.duration);
+    const mm = String(Math.floor(total / 60)).padStart(2, '0');
+    const ss = String(total % 60).padStart(2, '0');
+    label.textContent = `${mm}:${ss}`;
+  }
+
+  if (audio.readyState >= 1) showDuration(); // метаданные уже в кеше — события не будет
+  audio.addEventListener('loadedmetadata', showDuration);
+});
+
 // ---------- Telegram-style voice messages ----------
 // Скорость берётся из data-rate, по умолчанию обычная
 document.querySelectorAll('.tg-voice').forEach((bubble) => {
@@ -494,40 +583,6 @@ if (bgMusic && soundToggle) {
         if (musicOn && !anyDuckerPlaying()) fadeMusicTo(MUSIC_VOLUME, FADE_IN_MS);
       });
     });
-  });
-}
-
-// ---------- Personal greeting cards (Telegram-style bubbles) ----------
-function getInitials(name) {
-  return name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0].toUpperCase())
-    .join('');
-}
-
-const peopleList = document.getElementById('peopleList');
-if (peopleList && typeof GREETINGS !== 'undefined') {
-  GREETINGS.forEach(({ name, avatar, message }) => {
-    const card = document.createElement('div');
-    card.className = 'people-card reveal';
-
-    const avatarHtml = avatar
-      ? `<img class="people-card__avatar" src="assets/img/people/${avatar}.jpg" alt="${name}" loading="lazy">`
-      : `<span class="people-card__avatar people-card__avatar--initials">${getInitials(name)}</span>`;
-
-    const messageHtml = message.replace(/\n/g, '<br>');
-
-    card.innerHTML = `
-      ${avatarHtml}
-      <div class="people-card__bubble">
-        <p class="people-card__name">${name}</p>
-        <p class="people-card__message">${messageHtml}</p>
-      </div>
-    `;
-    peopleList.appendChild(card);
-    revealObserver.observe(card);
   });
 }
 

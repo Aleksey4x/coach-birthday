@@ -604,6 +604,46 @@ a { color: inherit; }
   50% { transform: scaleY(1.2); }
 }
 
+/* Светлый вариант плеера — для белых облачков в блоке поздравлений */
+.tg-voice--light {
+  background: none;
+  padding: 0;
+  max-width: none;
+  margin: 0;
+  gap: 10px;
+}
+
+.tg-voice--light .tg-voice__play {
+  width: 42px;
+  height: 42px;
+  background: #3aa3e3;
+  font-size: 1.05rem;
+}
+
+.tg-voice--light .tg-voice__wave {
+  height: 26px;
+  gap: 2px;
+}
+
+.tg-voice--light .tg-voice__wave span {
+  width: 2px;
+  background: #9fd0ee;
+  height: var(--h, 50%);
+  animation-delay: var(--d, 0s);
+}
+
+.tg-voice--light.is-playing .tg-voice__wave span {
+  background: #3aa3e3;
+}
+
+.tg-voice__time {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #7d8a94;
+  font-variant-numeric: tabular-nums;
+  flex: none;
+}
+
 .tg-voice__speed {
   font-size: 0.8rem;
   font-weight: 700;
@@ -624,6 +664,21 @@ a { color: inherit; }
   display: flex;
   gap: 8px;
   align-items: flex-start;
+}
+
+/* Голосовое + текст от одного человека: аватарка одна и стоит у текстового,
+   то есть у нижнего сообщения — как в телеграме у группы сообщений */
+.people-card--stacked {
+  align-items: flex-end;
+}
+
+.people-card__stack {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: flex-start;
+  min-width: 0;
+  max-width: calc(100% - 44px);
 }
 
 .people-card__avatar {
@@ -649,8 +704,19 @@ a { color: inherit; }
   color: #1c1c1c;
   border-radius: 2px 14px 14px 14px;
   padding: 8px 12px;
-  max-width: calc(100% - 48px);
+  max-width: 100%;
   box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+}
+
+.people-card__bubble--voice {
+  padding: 8px 10px;
+  width: 100%;
+}
+
+/* Имя над голосовым, когда текстового сообщения у человека нет */
+.people-card__name--solo {
+  margin: 0 0 4px 12px;
+  color: var(--accent-2);
 }
 
 .people-card__name {
