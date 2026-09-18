@@ -698,11 +698,12 @@ a { color: inherit; }
 .final-heading__toples {
   display: inline-block;
   white-space: nowrap;
-  color: var(--accent);
+  color: var(--text);
 }
 
 .final-heading__les {
   display: inline-block;
+  color: var(--accent);
   opacity: 0;
   will-change: opacity, transform;
 }
