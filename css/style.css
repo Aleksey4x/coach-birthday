@@ -3,6 +3,8 @@
   --track-dark: #3c1017;
   --line: #afa597;
   --bg-height: 5385px; /* натуральная высота background.svg */
+  --page-width: 800px;
+  --backdrop: #2a1113; /* поля по бокам: та же гамма, но заметно темнее фона страницы */
   --frame: #f4ece0;
   --text: #fdf6ec;
   --text-muted: #d9c3b6;
@@ -24,7 +26,14 @@ body {
   font-family: var(--font-body);
   color: var(--text);
   line-height: 1.5;
-  background-color: var(--track);
+  background-color: var(--backdrop);
+}
+
+/* Вся страница — колонка по центру; шире неё видна только подложка */
+.page {
+  position: relative; /* для .sound-check, он позиционируется от колонки */
+  max-width: var(--page-width);
+  margin: 0 auto;
 }
 
 /* Фон-подложка: дорожки стадиона с виражами, едут параллаксом.
@@ -35,7 +44,9 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  right: 0;
+  margin: 0 auto; /* фон живёт внутри колонки, а не на всю ширину экрана */
+  width: min(var(--page-width), 100%);
   height: var(--bg-height);
   z-index: -1;
   background-image: url('../assets/img/misc/background.svg');
@@ -772,7 +783,8 @@ a { color: inherit; }
 /* ---------- Sound toggle ---------- */
 .sound-toggle {
   position: fixed;
-  right: 20px;
+  /* прижата к правому краю колонки, а не экрана */
+  right: max(20px, calc(50% - var(--page-width) / 2 + 20px));
   bottom: 20px;
   z-index: 100;
   width: 48px;

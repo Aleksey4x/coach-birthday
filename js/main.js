@@ -255,10 +255,12 @@ if (mediaPin && mediaStage && mediaSubtitles) {
 
   makeScrollProgress(mediaPin, (progress) => {
     const position = withHold(progress) * steps;
-    const vw = window.innerWidth;
+    // Ширина сцены, а не экрана: страница ограничена колонкой, и слайд должен
+    // уходить ровно за её край, иначе в середине перехода была бы пустая пауза
+    const stageWidth = mediaStage.clientWidth;
 
     items.forEach((item, i) => {
-      const shift = (i - position) * vw;
+      const shift = (i - position) * stageWidth;
       item.style.transform = `translateX(${shift}px)`;
       subtitles[i].style.transform = `translateX(${shift}px)`;
     });
