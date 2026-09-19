@@ -157,6 +157,7 @@ if (heroPin && heroPhotos && heroHeadline && heroRoleLine && typeof HERO_SEQUENC
 
 // ---------- Age counter ----------
 const ageCounterEl = document.getElementById('ageCounter');
+const ageCross = document.getElementById('ageCross');
 const counterStatus = document.getElementById('counterStatus');
 const countBtn = document.getElementById('countBtn');
 const sfxBadumtss = document.getElementById('sfxBadumtss');
@@ -189,9 +190,14 @@ function spinDigitsFor(ms) {
   });
 }
 
+function setCross(visible) {
+  ageCross?.classList.toggle('is-visible', visible);
+}
+
 async function runAgeCounter() {
   countBtn.disabled = true;
   counterStatus.textContent = '';
+  setCross(false); // на случай повторного запуска
   playSfx(sfxAirhorn);
 
   // Прогон 5с -> остановка 3с -> прогон 3с -> остановка 3с -> прогон 2с -> 45
@@ -200,13 +206,20 @@ async function runAgeCounter() {
 
   // Своя отбивка на каждую остановку
   const pauseSounds = [sfxBadumtss, sfxBruh];
+  const crossDelayMs = 700; // крестик появляется чуть позже самого числа
 
   for (let i = 0; i < spinDurations.length; i += 1) {
     await spinDigitsFor(spinDurations[i]);
     if (i < spinDurations.length - 1) {
       ageCounterEl.textContent = String(randomFakeAge());
       playSfx(pauseSounds[i]);
-      await wait(pauseHoldMs);
+
+      await wait(crossDelayMs);
+      setCross(true);
+      // гаснет ровно перед тем, как цифры побегут дальше, при этом
+      // общая длина остановки не меняется
+      await wait(pauseHoldMs - crossDelayMs);
+      setCross(false);
     }
   }
 

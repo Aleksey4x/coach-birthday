@@ -64,7 +64,13 @@
 
         <div class="counter__content">
           <p class="section__text reveal">Ему исполнилось</p>
-          <div class="counter__display reveal" id="ageCounter">?</div>
+          <div class="counter__number reveal">
+            <div class="counter__display" id="ageCounter">?</div>
+            <svg class="counter__cross" id="ageCross" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+              <line x1="8" y1="8" x2="92" y2="92" vector-effect="non-scaling-stroke"></line>
+              <line x1="92" y1="8" x2="8" y2="92" vector-effect="non-scaling-stroke"></line>
+            </svg>
+          </div>
           <p class="section__text reveal">лет!</p>
           <p class="counter__status" id="counterStatus"></p>
           <button class="btn reveal" id="countBtn">Посчитать</button>

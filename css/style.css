@@ -287,6 +287,34 @@ a { color: inherit; }
 .counter-pin__head .section__title { margin-bottom: 4px; }
 .counter-pin__head .section__subtitle { margin: 0; }
 
+/* Крестик лежит поверх числа, поэтому число и он — соседи внутри общей обёртки */
+.counter__number {
+  position: relative;
+  display: inline-block;
+}
+
+.counter__cross {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.counter__cross line {
+  stroke: #e2342b;
+  stroke-width: 8;
+  stroke-linecap: round;
+}
+
+.counter__cross.is-visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
 .counter__display {
   font-family: var(--font-body);
   font-size: clamp(4rem, 22vw, 7rem);
